@@ -3,229 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>RESET v2.0</title>
+    <title>NEURAL COMMAND v3.0</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="RESET v2.0">
     
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
     <header class="top-bar">
-        <div class="logo">COMMAND <span>// v2.0</span></div>
-        <div class="status-indicators">
-            <div class="indicator"><span class="dot live"></span>DAY 01</div>
-            <div class="indicator level-badge">LVL 1</div>
+        <div class="logo">COMMAND <span>v3.0</span></div>
+        <div class="stats-header">
+            <div class="stat-item">LVL <span id="user-level">1</span></div>
+            <div class="stat-item">XP <span id="user-xp">0</span></div>
+            <div class="stat-item"><i class="fa-solid fa-fire"></i> <span id="streak-count">1</span></div>
         </div>
     </header>
 
     <main class="dashboard">
         <section class="panel protocol-panel">
             <div class="panel-header">
-                <h2>ПРОТОКОЛ // НАСТУПЛЕНИЕ</h2>
-                <span class="badge">ФОКУС: ДИЗАЙН</span>
-            </div>
-
-            <div class="timeline">
-                <div class="time-block critical">
-                    <span class="time">06:00</span>
-                    <div class="task-info">
-                        <strong>RESET // Старт</strong>
-                        <p>Подъем без раздумий. Ледяной душ 3 минуты. Сброс сна.</p>
-                    </div>
-                </div>
-
-                <div class="time-block highlight">
-                    <span class="time">06:30</span>
-                    <div class="task-info">
-                        <strong>AM CORE // Включение тела</strong>
-                        <p>Зарядка, кардио, отжимания, пресс. Разгоняем кровь.</p>
-                    </div>
-                </div>
-
-                <div class="time-block">
-                    <span class="time">07:30</span>
-                    <div class="task-info">
-                        <strong>Топливо // Завтрак</strong>
-                        <p>Чистый белок + сложные углеводы. Вода. Ноль сахара.</p>
-                    </div>
-                </div>
-
-                <div class="time-block highlight-blue">
-                    <span class="time">08:00</span>
-                    <div class="task-info">
-                        <strong>DEEP DEV // Обучение</strong>
-                        <p>Изучение Photoshop, Figma, AI-генерации. Прокачка хард-скиллов.</p>
-                    </div>
-                </div>
-
-                <div class="time-block highlight-offensive">
-                    <span class="time">12:00</span>
-                    <div class="task-info">
-                        <strong>OFFENSIVE // Захват рынка</strong>
-                        <p>Создание плакатов для реальных кафе. Холодная рассылка (Цель: 10 заведений).</p>
-                    </div>
-                </div>
-
-                <div class="time-block highlight">
-                    <span class="time">19:00</span>
-                    <div class="task-info">
-                        <strong>PM HARD // Выжигание</strong>
-                        <p>Силовая тренировка до отказа. Уничтожение стресса.</p>
-                    </div>
-                </div>
-
-                <div class="time-block">
-                    <span class="time">20:30</span>
-                    <div class="task-info">
-                        <strong>Восстановление</strong>
-                        <p>Теплый душ, ужин (белок + овощи), подготовка к завтра.</p>
-                    </div>
-                </div>
-
-                <div class="time-block critical">
-                    <span class="time">21:30</span>
-                    <div class="task-info">
-                        <strong>NEURAL SYNC // Лог</strong>
-                        <p>Отправка отчета Тренеру, прием и ввод новой директивы.</p>
-                    </div>
-                </div>
-
-                <div class="time-block">
-                    <span class="time">22:30</span>
-                    <div class="task-info">
-                        <strong>SYSTEM SHUTDOWN</strong>
-                        <p>Полное отключение. Телефон экраном вниз. Сон.</p>
-                    </div>
+                <h2>ТАКТИЧЕСКИЙ ТАЙМЛАЙН</h2>
+                <div class="day-progress-container">
+                    <div class="progress-fill" id="day-progress-bar"></div>
                 </div>
             </div>
 
-            <div class="trigger-control">
-                <h3>ЦЕЛОСТНОСТЬ СИСТЕМЫ</h3>
-                <div class="checkbox-grid">
-                    <label class="check-item"><input type="checkbox" id="chk-water"><span>Вода (3Л)</span></label>
-                    <label class="check-item"><input type="checkbox" id="chk-food"><span>Чистая еда</span></label>
-                    <label class="check-item"><input type="checkbox" id="chk-smoke"><span>0 Сигарет</span></label>
-                    <label class="check-item"><input type="checkbox" id="chk-alco"><span>0 Алко</span></label>
-                    <label class="check-item"><input type="checkbox" id="chk-ex"><span>0 Бывшая</span></label>
+            <div class="timeline" id="main-timeline">
                 </div>
-            </div>
 
-            <div class="emergency-box">
-                <div class="warning-title">⚠️ ТЯГА К СРЫВУ / ЛЕНЬ?</div>
-                <p><strong>Алгоритм:</strong> Упасть и сделать 30 отжиманий, стакан ледяной воды, таймер 15 минут. Мозг просто тестирует твою волю.</p>
+            <div class="workout-accordion">
+                <button class="accordion-trigger" onclick="toggleAccordion('am-workout')">
+                    <i class="fa-solid fa-bolt"></i> AM CORE // ДЕТАЛИ ТРЕНИРОВКИ
+                </button>
+                <div id="am-workout" class="accordion-content">
+                    <div class="exercise-card">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/13359507554754162072" alt="Running">
+                        <div class="ex-info">
+                            <strong>Бег (Стадион)</strong>
+                            <p>3 круга (1.2 км) — разминочный темп.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/5534487579953726454" alt="Abs">
+                        <div class="ex-info">
+                            <strong>Пресс / Планка</strong>
+                            <p>3 подхода: Подъем ног к перекладине (10 раз) + Планка (1 мин).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="accordion-trigger" onclick="toggleAccordion('pm-workout')">
+                    <i class="fa-solid fa-dumbbell"></i> PM HARD // ДЕТАЛИ ТРЕНИРОВКИ
+                </button>
+                <div id="pm-workout" class="accordion-content">
+                    <div class="exercise-card">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/17253212006989350866" alt="Pullups">
+                        <div class="ex-info">
+                            <strong>Площадка: База</strong>
+                            <p>Подтягивания: 4 сета до отказа. Брусья: 4 сета по 15 раз.</p>
+                        </div>
+                    </div>
+                    <div class="exercise-card">
+                        <img src="http://googleusercontent.com/image_collection/image_retrieval/16639128448946519469" alt="Dumbbells">
+                        <div class="ex-info">
+                            <strong>Гантели (Дом)</strong>
+                            <p>Махи в стороны (плечи): 3х12. Подъем на бицепс: 3х10 (вес 10кг).</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="panel ai-panel">
+        <section class="panel analytics-panel">
             <div class="panel-header">
-                <h2>NEURAL LINK</h2>
-                <span class="badge ai-badge">AI PROXY</span>
+                <h2>АНАЛИТИКА ДИСЦИПЛИНЫ</h2>
+            </div>
+            
+            <div class="chart-box">
+                <canvas id="disciplineChart"></canvas>
             </div>
 
-            <div class="coach-message" id="coach-box">
-                <div class="message-header">
-                    <span>АКТИВНАЯ ДИРЕКТИВА ТРЕНЕРА</span>
-                </div>
-                <div class="message-body" id="coach-text">
-                    <p>Настройки сброшены. Фаза Наступления запущена.</p>
-                    <p>Твоя цель на сегодня — отработать график механически и сделать первые шаги в дизайне плакатов. Не жди вдохновения, просто открывай софт и делай. Вечером жду лог.</p>
-                </div>
+            <div class="coach-message-v3">
+                <div class="ai-head">NEURAL LINK // ACTIVE</div>
+                <div id="coach-text">Система v3.0 развернута. Каждая неудача (X) сегодня снижает твой общий XP. Не позволяй лени победить цифры.</div>
             </div>
 
-            <div class="sync-box">
-                <div class="sync-header">NEURAL SYNC // ВВОД КОДА</div>
-                <div class="sync-input-group">
-                    <input type="text" id="directive-input" placeholder="Вставь код от Тренера сюда...">
-                    <button id="sync-btn" class="sync-btn">SYNC</button>
-                </div>
-                <span id="sync-status" class="status-msg"></span>
+            <div class="console-v3">
+                <textarea id="daily-log" placeholder="COMMANDER'S LOG: Опиши состояние системы после тренировок..."></textarea>
+                <button class="action-btn" onclick="saveData()">ЗАФИКСИРОВАТЬ РЕЗУЛЬТАТЫ ДНЯ</button>
             </div>
 
-            <div class="console-box">
-                <div class="console-header">
-                    <span>COMMANDER'S LOG // ОТЧЕТ</span>
-                </div>
-                <textarea id="daily-log" placeholder="[21:30] Напиши, сколько эскизов сделал, кому отправил, как прошли тренировки и где пытался сломаться мозг..."></textarea>
-                <button id="save-log-btn" class="submit-btn">СОХРАНИТЬ ЛОГ ДЛЯ ТРЕНЕРА</button>
-                <span id="save-status" class="status-msg"></span>
+            <div class="sync-footer">
+                <input type="text" id="sync-code" placeholder="Код директивы...">
+                <button onclick="syncDirective()">SYNC</button>
             </div>
         </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // ЭЛЕМЕНТЫ ИНТЕРФЕЙСА
-        const logInput = document.getElementById('daily-log');
-        const saveBtn = document.getElementById('save-log-btn');
-        const saveStatus = document.getElementById('save-status');
-        
-        const directiveInput = document.getElementById('directive-input');
-        const syncBtn = document.getElementById('sync-btn');
-        const syncStatus = document.getElementById('sync-status');
-        const coachText = document.getElementById('coach-text');
+        // ДАННЫЕ ПРОТОКОЛА
+        const protocol = [
+            { id: 1, time: "06:00", task: "RESET (Холодный душ)", xp: 50 },
+            { id: 2, time: "06:30", task: "AM CORE (Разминка)", xp: 100 },
+            { id: 3, time: "08:00", task: "DEEP DEV (Дизайн / Код)", xp: 150 },
+            { id: 4, time: "12:00", task: "OFFENSIVE (Рассылка 10)", xp: 200 },
+            { id: 5, time: "19:00", task: "PM HARD (Сила / Улица)", xp: 150 },
+            { id: 6, time: "21:30", task: "LOG (Отчет Тренеру)", xp: 50 },
+            { id: 7, time: "22:30", task: "SHUTDOWN (Сон)", xp: 50 }
+        ];
 
-        // 1. ВОССТАНОВЛЕНИЕ СОХРАНЕННЫХ ДАННЫХ
-        if (localStorage.getItem('commander_log')) {
-            logInput.value = localStorage.getItem('commander_log');
+        let userXP = parseInt(localStorage.getItem('xp')) || 0;
+        let userLevel = Math.floor(userXP / 1000) + 1;
+        let dayStats = JSON.parse(localStorage.getItem('dayStats')) || [0, 0, 0, 0, 0, 0, 0];
+
+        // ГЕНЕРАЦИЯ ТАЙМЛАЙНА
+        function renderTimeline() {
+            const container = document.getElementById('main-timeline');
+            container.innerHTML = '';
+            protocol.forEach((item, index) => {
+                const status = localStorage.getItem(`task_${item.id}`);
+                const div = document.createElement('div');
+                div.className = `t-item ${status === 'win' ? 'status-win' : status === 'fail' ? 'status-fail' : ''}`;
+                div.innerHTML = `
+                    <div class="t-time">${item.time}</div>
+                    <div class="t-content">
+                        <strong>${item.task}</strong>
+                    </div>
+                    <div class="t-actions">
+                        <button class="btn-win" onclick="setStatus(${item.id}, 'win', ${index})">✓</button>
+                        <button class="btn-fail" onclick="setStatus(${item.id}, 'fail', ${index})">X</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            updateStats();
         }
-        if (localStorage.getItem('custom_directive')) {
-            coachText.innerHTML = localStorage.getItem('custom_directive');
+
+        function setStatus(id, status, index) {
+            const prevStatus = localStorage.getItem(`task_${id}`);
+            if (prevStatus === status) return;
+
+            localStorage.setItem(`task_${id}`, status);
+            
+            if (status === 'win') {
+                userXP += protocol.find(p => p.id === id).xp;
+                dayStats[index] = 1;
+            } else {
+                if (prevStatus === 'win') userXP -= protocol.find(p => p.id === id).xp;
+                dayStats[index] = -1;
+            }
+
+            localStorage.setItem('xp', userXP);
+            localStorage.setItem('dayStats', JSON.stringify(dayStats));
+            renderTimeline();
+            updateChart();
         }
-        
-        // Восстановление чекбоксов
-        const checkboxes = ['water', 'food', 'smoke', 'alco', 'ex'];
-        checkboxes.forEach(id => {
-            const chk = document.getElementById(`chk-${id}`);
-            if (localStorage.getItem(`state_${id}`) === 'true') chk.checked = true;
-            chk.addEventListener('change', () => localStorage.setItem(`state_${id}`, chk.checked));
-        });
 
-        // 2. СОХРАНЕНИЕ ЛОГА
-        saveBtn.addEventListener('click', () => {
-            localStorage.setItem('commander_log', logInput.value);
-            saveStatus.textContent = "✓ Лог зафиксирован. Скопируй и отправь мне в чат.";
-            saveStatus.style.color = "#deff9a";
-            setTimeout(() => saveStatus.textContent = "", 4000);
-        });
+        function updateStats() {
+            document.getElementById('user-xp').textContent = userXP;
+            document.getElementById('user-level').textContent = Math.floor(userXP / 1000) + 1;
+            
+            const wins = protocol.filter(p => localStorage.getItem(`task_${p.id}`) === 'win').length;
+            const progress = (wins / protocol.length) * 100;
+            document.getElementById('day-progress-bar').style.width = `${progress}%`;
+        }
 
-        logInput.addEventListener('input', () => {
-            localStorage.setItem('commander_log', logInput.value);
-        });
+        // АККОРДЕОН
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const isVisible = content.style.display === 'block';
+            document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
+            content.style.display = isVisible ? 'none' : 'block';
+        }
 
-        // 3. СИНХРОНИЗАЦИЯ ДИРЕКТИВЫ (Обновление интерфейса кодом от Тренера)
-        syncBtn.addEventListener('click', () => {
-            const code = directiveInput.value.trim();
-            if (!code) return;
-
-            syncStatus.textContent = "Синхронизация...";
-            syncStatus.style.color = "#a1a1aa";
-
-            setTimeout(() => {
-                // Если передана JSON строка или обычный текст
-                let newText = "";
-                try {
-                    // Попытка распарсить JSON (если тренер передаст структуру)
-                    const parsed = JSON.parse(code);
-                    newText = `<p><strong>[УРОВЕНЬ ОБНОВЛЕН: ${parsed.level || 'N/A'}]</strong></p><p>${parsed.message}</p>`;
-                } catch(e) {
-                    // Если передан обычный текст
-                    newText = `<p>${code}</p>`;
+        // ГРАФИК (Chart.js)
+        let disciplineChart;
+        function initChart() {
+            const ctx = document.getElementById('disciplineChart').getContext('2d');
+            disciplineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: protocol.map(p => p.time),
+                    datasets: [{
+                        label: 'Дисциплина (Binary)',
+                        data: dayStats,
+                        borderColor: '#deff9a',
+                        backgroundColor: 'rgba(222, 255, 154, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: -1, max: 1, grid: { color: '#27272a' }, ticks: { display: false } },
+                        x: { grid: { display: false }, ticks: { color: '#a1a1aa' } }
+                    },
+                    plugins: { legend: { display: false } }
                 }
+            });
+        }
 
-                coachText.innerHTML = newText;
-                localStorage.setItem('custom_directive', newText);
-                directiveInput.value = '';
-                
-                syncStatus.textContent = "✓ Нейролинк обновлен!";
-                syncStatus.style.color = "#deff9a";
-                setTimeout(() => syncStatus.textContent = "", 3000);
-            }, 600);
-        });
+        function updateChart() {
+            disciplineChart.data.datasets[0].data = dayStats;
+            disciplineChart.update();
+        }
+
+        function saveData() {
+            localStorage.setItem('commander_log', document.getElementById('daily-log').value);
+            alert("ЛОГ ЗАПИСАН. ОТПРАВЬ ЕГО ТРЕНЕРУ В ЧАТ.");
+        }
+
+        window.onload = () => {
+            renderTimeline();
+            initChart();
+            if(localStorage.getItem('commander_log')) document.getElementById('daily-log').value = localStorage.getItem('commander_log');
+        };
     </script>
 </body>
 </html>
