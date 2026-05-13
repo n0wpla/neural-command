@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <title>RESET</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RESET">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="logo">COMMAND <span>// 14.05</span></div>
+        <div class="status-indicators">
+            <div class="indicator"><span class="dot live"></span>DAY 1</div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <section class="panel protocol-panel">
+            <div class="panel-header">
+                <h2>ПРОТОКОЛ ДНЯ</h2>
+                <span class="badge">РЕЖИМ</span>
+            </div>
+
+            <div class="timeline">
+                <div class="time-block critical">
+                    <span class="time">06:00</span>
+                    <div class="task-info">
+                        <strong>Подъем + Ледяной душ</strong>
+                        <p>Сразу под холодную воду. Смываем остатки сна.</p>
+                    </div>
+                </div>
+
+                <div class="time-block highlight">
+                    <span class="time">06:30</span>
+                    <div class="task-info">
+                        <strong>AM Тренировка</strong>
+                        <p>Зарядка, отжимания, кардио, пресс.</p>
+                    </div>
+                </div>
+
+                <div class="time-block">
+                    <span class="time">07:30</span>
+                    <div class="task-info">
+                        <strong>Топливо (Завтрак)</strong>
+                        <p>Белок + сложные углеводы. Вода перед едой.</p>
+                    </div>
+                </div>
+
+                <div class="time-block">
+                    <span class="time">08:00</span>
+                    <div class="task-info">
+                        <strong>Deep Work // Развитие</strong>
+                        <p>Код, обучение. Без фонового шума.</p>
+                    </div>
+                </div>
+
+                <div class="time-block">
+                    <span class="time">10:00</span>
+                    <div class="task-info">
+                        <strong>Смена / Логистика</strong>
+                        <p>Концентрация на процессах склада. Держать осанку.</p>
+                    </div>
+                </div>
+
+                <div class="time-block highlight">
+                    <span class="time">19:00</span>
+                    <div class="task-info">
+                        <strong>PM Тренировка (Силовая)</strong>
+                        <p>Работа до отказа. Выжигаем стресс.</p>
+                    </div>
+                </div>
+
+                <div class="time-block critical">
+                    <span class="time">21:30</span>
+                    <div class="task-info">
+                        <strong>Neural Link // Отчет</strong>
+                        <p>Заполнение лога в панели Тренера.</p>
+                    </div>
+                </div>
+
+                <div class="time-block">
+                    <span class="time">22:30</span>
+                    <div class="task-info">
+                        <strong>SYSTEM SHUTDOWN</strong>
+                        <p>Телефон экраном вниз. Темнота.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trigger-control">
+                <h3>ЦЕЛОСТНОСТЬ</h3>
+                <div class="checkbox-grid">
+                    <label class="check-item"><input type="checkbox"><span>Вода (3Л)</span></label>
+                    <label class="check-item"><input type="checkbox"><span>Питание</span></label>
+                    <label class="check-item"><input type="checkbox"><span>0 Сигарет</span></label>
+                    <label class="check-item"><input type="checkbox"><span>0 Алко</span></label>
+                    <label class="check-item"><input type="checkbox"><span>0 Бывшая</span></label>
+                </div>
+            </div>
+
+            <div class="emergency-box">
+                <div class="warning-title">⚠️ ТЯГА К СРЫВУ?</div>
+                <p><strong>Инструкция:</strong> 30 отжиманий, стакан воды, таймер на 15 минут. Это временно.</p>
+            </div>
+        </section>
+
+        <section class="panel ai-panel">
+            <div class="panel-header">
+                <h2>NEURAL LINK</h2>
+                <span class="badge ai-badge">AI</span>
+            </div>
+
+            <div class="coach-message">
+                <div class="message-header">
+                    <span>ВХОДЯЩЕЕ: ДЕНЬ 1</span>
+                </div>
+                <div class="message-body">
+                    <p>Отработай расписание механически. Старый мозг будет сопротивляться и требовать лечь на кровать. <strong>Игнорируй это как баг.</strong></p>
+                    <p>Каждое выполненное действие — это кирпич в твою уверенность. Вечером жду отчет.</p>
+                </div>
+            </div>
+
+            <div class="console-box">
+                <div class="console-header">
+                    <span>COMMANDER'S LOG</span>
+                </div>
+                <textarea id="daily-log" placeholder="[21:30] Пиши сюда отчет: что получилось, где ломало..."></textarea>
+                <div class="console-actions">
+                    <button id="save-log-btn" class="submit-btn">ОТПРАВИТЬ</button>
+                </div>
+                <span id="save-status" class="status-msg"></span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const logInput = document.getElementById('daily-log');
+        const saveBtn = document.getElementById('save-log-btn');
+        const statusMsg = document.getElementById('save-status');
+
+        if(localStorage.getItem('day1_log')) {
+            logInput.value = localStorage.getItem('day1_log');
+        }
+
+        saveBtn.addEventListener('click', () => {
+            localStorage.setItem('day1_log', logInput.value);
+            statusMsg.textContent = "✓ Записано. Скопируй в чат тренеру.";
+            statusMsg.style.color = "#deff9a";
+            setTimeout(() => statusMsg.textContent = "", 4000);
+        });
+
+        logInput.addEventListener('input', () => {
+            localStorage.setItem('day1_log', logInput.value);
+        });
+    </script>
+</body>
+</html>

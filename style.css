@@ -1,0 +1,300 @@
+/* БАЗОВЫЕ НАСТРОЙКИ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent; /* Убирает серое мигание при клике на iOS */
+}
+
+body {
+    background-color: #09090b;
+    color: #f4f4f5;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Учитываем безопасные зоны iPhone */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+/* ВЕРХНЯЯ ПАНЕЛЬ */
+.top-bar {
+    background-color: #18181b;
+    border-bottom: 1px solid #27272a;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.logo span { color: #deff9a; }
+
+.status-indicators {
+    display: flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #f4f4f5;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #deff9a;
+    border-radius: 50%;
+    margin-right: 6px;
+    box-shadow: 0 0 8px #deff9a;
+}
+
+/* ОСНОВНАЯ СЕТКА */
+.dashboard {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* На мобилке всё идет в одну колонку */
+    gap: 15px;
+    padding: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.panel {
+    background-color: #121214;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #27272a;
+    padding-bottom: 12px;
+}
+
+.panel-header h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: #f4f4f5;
+}
+
+.badge {
+    background-color: #27272a;
+    color: #deff9a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.ai-badge {
+    background-color: #deff9a;
+    color: #09090b;
+}
+
+/* ТАЙМЛАЙН ПРОТОКОЛА */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.time-block {
+    display: flex;
+    gap: 15px;
+    padding: 12px;
+    background-color: #18181b;
+    border-radius: 8px;
+    border-left: 3px solid #3f3f46;
+}
+
+.time-block.highlight {
+    border-left-color: #deff9a;
+    background-color: rgba(222, 255, 154, 0.03);
+}
+
+.time-block.critical { border-left-color: #f43f5e; }
+
+.time {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: #a1a1aa;
+    font-size: 0.9rem;
+    width: 45px;
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+
+.time-block.highlight .time { color: #deff9a; }
+
+.task-info strong {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.task-info p {
+    font-size: 0.8rem;
+    color: #a1a1aa;
+}
+
+/* ЧЕКБОКСЫ ПРИВЫЧЕК (Оптимизация под пальцы) */
+.trigger-control h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #a1a1aa;
+    margin-bottom: 10px;
+}
+
+.checkbox-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #18181b;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    border: 1px solid #27272a;
+}
+
+.check-item input {
+    accent-color: #deff9a;
+    width: 20px;
+    height: 20px; /* Увеличенный размер для мобилок */
+}
+
+/* КРАСНАЯ КНОПКА */
+.emergency-box {
+    background-color: rgba(244, 63, 94, 0.05);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.warning-title {
+    color: #f43f5e;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.emergency-box p {
+    font-size: 0.8rem;
+    color: #e4e4e7;
+}
+
+/* ПАНЕЛЬ ИИ */
+.coach-message {
+    background-color: #18181b;
+    border-radius: 8px;
+    border: 1px solid #27272a;
+    overflow: hidden;
+}
+
+.message-header {
+    background-color: #27272a;
+    padding: 6px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #deff9a;
+}
+
+.message-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #e4e4e7;
+}
+
+/* КОНСОЛЬ ВВОДА */
+.console-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.console-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #a1a1aa;
+}
+
+textarea {
+    width: 100%;
+    min-height: 120px;
+    background-color: #09090b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 12px;
+    color: #deff9a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    resize: none;
+    outline: none;
+}
+
+textarea:focus { border-color: #deff9a; }
+
+.console-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.submit-btn {
+    background-color: #deff9a;
+    color: #09090b;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
+}
+
+.status-msg {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    text-align: center;
+    min-height: 20px;
+}
+
+/* АДАПТАЦИЯ ДЛЯ ШИРОКИХ ЭКРАНОВ (Если откроешь с компа) */
+@media (min-width: 768px) {
+    .dashboard {
+        flex-direction: row;
+        max-width: 1400px;
+    }
+    .panel { width: 50%; }
+}
