@@ -3,7 +3,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent; /* Убирает серое мигание при клике на iOS */
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -14,7 +14,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    /* Учитываем безопасные зоны iPhone */
+    /* Учет безопасных зон экрана iPhone */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
@@ -25,7 +25,7 @@ body {
 .top-bar {
     background-color: #18181b;
     border-bottom: 1px solid #27272a;
-    padding: 12px 20px;
+    padding: 12px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +36,7 @@ body {
 
 .logo {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
 }
 
@@ -45,9 +45,19 @@ body {
 .status-indicators {
     display: flex;
     align-items: center;
+    gap: 10px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.8rem;
     color: #f4f4f5;
+}
+
+.level-badge {
+    background-color: #27272a;
+    color: #deff9a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    border: 1px solid #3f3f46;
 }
 
 .dot {
@@ -60,11 +70,11 @@ body {
     box-shadow: 0 0 8px #deff9a;
 }
 
-/* ОСНОВНАЯ СЕТКА */
+/* ОСНОВНОЙ ДАШБОРД */
 .dashboard {
     flex-grow: 1;
     display: flex;
-    flex-direction: column; /* На мобилке всё идет в одну колонку */
+    flex-direction: column;
     gap: 15px;
     padding: 15px;
     width: 100%;
@@ -76,10 +86,10 @@ body {
     background-color: #121214;
     border: 1px solid #27272a;
     border-radius: 12px;
-    padding: 20px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
 .panel-header {
@@ -87,12 +97,12 @@ body {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #27272a;
-    padding-bottom: 12px;
+    padding-bottom: 10px;
 }
 
 .panel-header h2 {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: #f4f4f5;
 }
 
@@ -120,16 +130,27 @@ body {
 
 .time-block {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     padding: 12px;
     background-color: #18181b;
     border-radius: 8px;
     border-left: 3px solid #3f3f46;
 }
 
+/* Цветовая индикация фаз */
 .time-block.highlight {
     border-left-color: #deff9a;
     background-color: rgba(222, 255, 154, 0.03);
+}
+
+.time-block.highlight-blue {
+    border-left-color: #38bdf8;
+    background-color: rgba(56, 189, 248, 0.03);
+}
+
+.time-block.highlight-offensive {
+    border-left-color: #fbbf24;
+    background-color: rgba(251, 191, 36, 0.04);
 }
 
 .time-block.critical { border-left-color: #f43f5e; }
@@ -138,18 +159,21 @@ body {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
     color: #a1a1aa;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     width: 45px;
     flex-shrink: 0;
     padding-top: 2px;
 }
 
 .time-block.highlight .time { color: #deff9a; }
+.time-block.highlight-blue .time { color: #38bdf8; }
+.time-block.highlight-offensive .time { color: #fbbf24; }
 
 .task-info strong {
     display: block;
     font-size: 0.95rem;
     margin-bottom: 2px;
+    color: #f4f4f5;
 }
 
 .task-info p {
@@ -157,7 +181,7 @@ body {
     color: #a1a1aa;
 }
 
-/* ЧЕКБОКСЫ ПРИВЫЧЕК (Оптимизация под пальцы) */
+/* ЧЕКБОКСЫ ПРИВЫЧЕК */
 .trigger-control h3 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
@@ -181,12 +205,13 @@ body {
     cursor: pointer;
     font-size: 0.9rem;
     border: 1px solid #27272a;
+    user-select: none;
 }
 
 .check-item input {
     accent-color: #deff9a;
     width: 20px;
-    height: 20px; /* Увеличенный размер для мобилок */
+    height: 20px;
 }
 
 /* КРАСНАЯ КНОПКА */
@@ -231,15 +256,65 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #e4e4e7;
 }
+
+/* БЛОК СИНХРОНИЗАЦИИ */
+.sync-box {
+    background-color: #18181b;
+    border: 1px dashed #3f3f46;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sync-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #a1a1aa;
+}
+
+.sync-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+#directive-input {
+    flex-grow: 1;
+    background-color: #09090b;
+    border: 1px solid #27272a;
+    border-radius: 6px;
+    padding: 10px;
+    color: #deff9a;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    outline: none;
+}
+
+#directive-input:focus { border-color: #deff9a; }
+
+.sync-btn {
+    background-color: #27272a;
+    color: #deff9a;
+    border: 1px solid #3f3f46;
+    border-radius: 6px;
+    padding: 0 15px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.sync-btn:active { background-color: #deff9a; color: #09090b; }
 
 /* КОНСОЛЬ ВВОДА */
 .console-box {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .console-header {
@@ -250,47 +325,41 @@ body {
 
 textarea {
     width: 100%;
-    min-height: 120px;
+    min-height: 100px;
     background-color: #09090b;
     border: 1px solid #27272a;
     border-radius: 8px;
     padding: 12px;
     color: #deff9a;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     resize: none;
     outline: none;
 }
 
 textarea:focus { border-color: #deff9a; }
 
-.console-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
 .submit-btn {
     background-color: #deff9a;
     color: #09090b;
     border: none;
     border-radius: 8px;
-    padding: 14px;
+    padding: 12px;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     width: 100%;
     text-align: center;
 }
 
 .status-msg {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-align: center;
-    min-height: 20px;
+    min-height: 16px;
 }
 
-/* АДАПТАЦИЯ ДЛЯ ШИРОКИХ ЭКРАНОВ (Если откроешь с компа) */
+/* ДЕСКТОП ВЕРСИЯ */
 @media (min-width: 768px) {
     .dashboard {
         flex-direction: row;
