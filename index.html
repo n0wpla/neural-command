@@ -3,230 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>NEURAL COMMAND v3.0</title>
+    <title>SYSTEM // SOLO LEVELING</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SYSTEM">
     
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Urbanist:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="top-bar">
-        <div class="logo">COMMAND <span>v3.0</span></div>
-        <div class="stats-header">
-            <div class="stat-item">LVL <span id="user-level">1</span></div>
-            <div class="stat-item">XP <span id="user-xp">0</span></div>
-            <div class="stat-item"><i class="fa-solid fa-fire"></i> <span id="streak-count">1</span></div>
+    <header class="status-window">
+        <div class="system-header">
+            <div class="sys-title">СИСТЕМА <span>// ИГРОК</span></div>
+            <div class="rank-badge" id="user-rank">E-RANK</div>
+        </div>
+        
+        <div class="player-stats">
+            <div class="stat-box">
+                <span class="stat-label">УРОВЕНЬ</span>
+                <span class="stat-val" id="user-lvl">1</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">ОПЫТ (XP)</span>
+                <span class="stat-val accent" id="user-xp">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">СЕРИЯ ДНЕЙ</span>
+                <span class="stat-val blue" id="user-streak">1</span>
+            </div>
+        </div>
+        
+        <div class="xp-bar-container">
+            <div class="xp-bar-fill" id="xp-progress"></div>
         </div>
     </header>
 
     <main class="dashboard">
-        <section class="panel protocol-panel">
+        <section class="panel quest-panel">
             <div class="panel-header">
-                <h2>ТАКТИЧЕСКИЙ ТАЙМЛАЙН</h2>
-                <div class="day-progress-container">
-                    <div class="progress-fill" id="day-progress-bar"></div>
+                <h2>⚠️ ЕЖЕДНЕВНЫЙ КВЕСТ: НАСТУПЛЕНИЕ</h2>
+                <span class="quest-status">НЕ ЗАВЕРШЕН</span>
+            </div>
+
+            <div class="timeline" id="quest-timeline">
+                </div>
+
+            <div class="tactical-workouts">
+                <button class="accordion-btn" onclick="toggleWorkout('am-details')">
+                    <span>⚡ AM CORE // УТРЕННЯЯ БАЗА</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div id="am-details" class="workout-content">
+                    <div class="ex-item">
+                        <strong>1. Бег по стадиону (Кардио)</strong>
+                        <p>Цель: 3 круга (1.2 км). Запуск лимфосистемы после сна.</p>
+                    </div>
+                    <div class="ex-item">
+                        <strong>2. Пресс на турнике</strong>
+                        <p>Цель: 3 подхода по 10 подъемов ног к перекладине.</p>
+                    </div>
+                    <div class="ex-item">
+                        <strong>3. Железная планка</strong>
+                        <p>Цель: 1 минута идеального удержания.</p>
+                    </div>
+                </div>
+
+                <button class="accordion-btn" onclick="toggleWorkout('pm-details')">
+                    <span>💥 PM HARD // СИЛОВОЕ УНИЧТОЖЕНИЕ</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div id="pm-details" class="workout-content">
+                    <div class="ex-item">
+                        <strong>1. Улица: Спина и Грудь</strong>
+                        <p>Подтягивания на турнике: 4 подхода до отказа.<br>Отжимания на брусьях: 4 подхода по 12-15 раз.</p>
+                    </div>
+                    <div class="ex-item">
+                        <strong>2. Дом: Добивка гантелями (10 кг)</strong>
+                        <p>Жим гантелей стоя (плечи): 3 подхода по 12 раз.<br>Подъем на бицепс: 3 подхода по 10 раз.<br>Приседания с весом: 3 подхода по 20 раз.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="timeline" id="main-timeline">
+            <div class="penalty-box">
+                <h3>КОНТРОЛЬ ШТРАФНОЙ ЗОНЫ</h3>
+                <div class="triggers-grid">
+                    <label class="trigger-item"><input type="checkbox" id="t-water"><span>Вода 3Л</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-food"><span>Еда без сахара</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-smoke"><span>0 Сигарет</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-alco"><span>0 Пива/Алко</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-ex"><span>0 Бывшая</span></label>
                 </div>
-
-            <div class="workout-accordion">
-                <button class="accordion-trigger" onclick="toggleAccordion('am-workout')">
-                    <i class="fa-solid fa-bolt"></i> AM CORE // ДЕТАЛИ ТРЕНИРОВКИ
-                </button>
-                <div id="am-workout" class="accordion-content">
-                    <div class="exercise-card">
-                        <img src="http://googleusercontent.com/image_collection/image_retrieval/13359507554754162072" alt="Running">
-                        <div class="ex-info">
-                            <strong>Бег (Стадион)</strong>
-                            <p>3 круга (1.2 км) — разминочный темп.</p>
-                        </div>
-                    </div>
-                    <div class="exercise-card">
-                        <img src="http://googleusercontent.com/image_collection/image_retrieval/5534487579953726454" alt="Abs">
-                        <div class="ex-info">
-                            <strong>Пресс / Планка</strong>
-                            <p>3 подхода: Подъем ног к перекладине (10 раз) + Планка (1 мин).</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="accordion-trigger" onclick="toggleAccordion('pm-workout')">
-                    <i class="fa-solid fa-dumbbell"></i> PM HARD // ДЕТАЛИ ТРЕНИРОВКИ
-                </button>
-                <div id="pm-workout" class="accordion-content">
-                    <div class="exercise-card">
-                        <img src="http://googleusercontent.com/image_collection/image_retrieval/17253212006989350866" alt="Pullups">
-                        <div class="ex-info">
-                            <strong>Площадка: База</strong>
-                            <p>Подтягивания: 4 сета до отказа. Брусья: 4 сета по 15 раз.</p>
-                        </div>
-                    </div>
-                    <div class="exercise-card">
-                        <img src="http://googleusercontent.com/image_collection/image_retrieval/16639128448946519469" alt="Dumbbells">
-                        <div class="ex-info">
-                            <strong>Гантели (Дом)</strong>
-                            <p>Махи в стороны (плечи): 3х12. Подъем на бицепс: 3х10 (вес 10кг).</p>
-                        </div>
-                    </div>
+                <div class="emergency-trigger">
+                    <strong>🔥 НАКРЫВАЕТ ЛЕНЬ ИЛИ ТЯГА?</strong>
+                    <p>Система требует: 30 отжиманий прямо сейчас. Выпей ледяной воды. Сбрось дебафф.</p>
                 </div>
             </div>
         </section>
 
-        <section class="panel analytics-panel">
+        <section class="panel system-panel">
             <div class="panel-header">
-                <h2>АНАЛИТИКА ДИСЦИПЛИНЫ</h2>
-            </div>
-            
-            <div class="chart-box">
-                <canvas id="disciplineChart"></canvas>
+                <h2>ГРАФИК ИНДЕКСА ВОЛИ</h2>
             </div>
 
-            <div class="coach-message-v3">
-                <div class="ai-head">NEURAL LINK // ACTIVE</div>
-                <div id="coach-text">Система v3.0 развернута. Каждая неудача (X) сегодня снижает твой общий XP. Не позволяй лени победить цифры.</div>
+            <div class="chart-container">
+                <canvas id="willpowerChart"></canvas>
             </div>
 
-            <div class="console-v3">
-                <textarea id="daily-log" placeholder="COMMANDER'S LOG: Опиши состояние системы после тренировок..."></textarea>
-                <button class="action-btn" onclick="saveData()">ЗАФИКСИРОВАТЬ РЕЗУЛЬТАТЫ ДНЯ</button>
+            <div class="system-message">
+                <div class="msg-head">СИСТЕМНОЕ УВЕДОМЛЕНИЕ</div>
+                <div class="msg-body" id="directive-display">
+                    Испытание Игрока началось. Заполняй шкалу опыта, закрывая задачи. Провал (X) приведет к потере статов. Докажи, что готов к Пробуждению.
+                </div>
             </div>
 
-            <div class="sync-footer">
-                <input type="text" id="sync-code" placeholder="Код директивы...">
-                <button onclick="syncDirective()">SYNC</button>
+            <div class="sync-block">
+                <input type="text" id="directive-input" placeholder="Код синхронизации от Системы...">
+                <button onclick="applyDirective()">ВВОД</button>
+            </div>
+
+            <div class="log-block">
+                <div class="log-head">ЖУРНАЛ ИГРОКА // ВЕЧЕРНИЙ ОТЧЕТ</div>
+                <textarea id="player-log" placeholder="[21:30] Зафиксируй здесь: сколько плакатов сделал, реакцию мышц и попытки старого мозга сдаться..."></textarea>
+                <button class="save-log-btn" onclick="savePlayerLog()">СОХРАНИТЬ ЛОГ</button>
             </div>
         </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // ДАННЫЕ ПРОТОКОЛА
-        const protocol = [
-            { id: 1, time: "06:00", task: "RESET (Холодный душ)", xp: 50 },
-            { id: 2, time: "06:30", task: "AM CORE (Разминка)", xp: 100 },
-            { id: 3, time: "08:00", task: "DEEP DEV (Дизайн / Код)", xp: 150 },
-            { id: 4, time: "12:00", task: "OFFENSIVE (Рассылка 10)", xp: 200 },
-            { id: 5, time: "19:00", task: "PM HARD (Сила / Улица)", xp: 150 },
-            { id: 6, time: "21:30", task: "LOG (Отчет Тренеру)", xp: 50 },
-            { id: 7, time: "22:30", task: "SHUTDOWN (Сон)", xp: 50 }
+        // --- БАЗА ДАННЫХ КВЕСТА ---
+        const quests = [
+            { id: 1, time: "06:00", name: "Подъем + Ледяной душ", xp: 50 },
+            { id: 2, time: "06:30", name: "AM CORE (Утренний воркаут)", xp: 100 },
+            { id: 3, time: "08:00", name: "DEEP DEV (Прокачка скиллов)", xp: 150 },
+            { id: 4, time: "12:00", name: "OFFENSIVE (Дизайн + 10 писем)", xp: 250 },
+            { id: 5, time: "19:00", name: "PM HARD (Силовой предел)", xp: 200 },
+            { id: 6, time: "21:30", name: "Синхронизация лога", xp: 50 },
+            { id: 7, time: "22:30", name: "Сон (Регенерация)", xp: 50 }
         ];
 
-        let userXP = parseInt(localStorage.getItem('xp')) || 0;
-        let userLevel = Math.floor(userXP / 1000) + 1;
-        let dayStats = JSON.parse(localStorage.getItem('dayStats')) || [0, 0, 0, 0, 0, 0, 0];
+        // --- СОСТОЯНИЕ ИГРОКА ---
+        let playerXP = parseInt(localStorage.getItem('sl_xp')) || 0;
+        let questStates = JSON.parse(localStorage.getItem('sl_states')) || {};
+        let chartData = JSON.parse(localStorage.getItem('sl_chart')) || [0, 0, 0, 0, 0, 0, 0];
 
-        // ГЕНЕРАЦИЯ ТАЙМЛАЙНА
-        function renderTimeline() {
-            const container = document.getElementById('main-timeline');
+        // --- ОПРЕДЕЛЕНИЕ РАНГА ---
+        function getRank(lvl) {
+            if (lvl >= 50) return "S-RANK";
+            if (lvl >= 30) return "A-RANK";
+            if (lvl >= 20) return "B-RANK";
+            if (lvl >= 10) return "C-RANK";
+            if (lvl >= 5) return "D-RANK";
+            return "E-RANK";
+        }
+
+        // --- ОБНОВЛЕНИЕ ИНТЕРФЕЙСА СТАТУСА ---
+        function updatePlayerStatus() {
+            const lvl = Math.floor(playerXP / 500) + 1;
+            const currentLvlBaseXP = (lvl - 1) * 500;
+            const nextLvlXP = lvl * 500;
+            const xpIntoLvl = playerXP - currentLvlBaseXP;
+            const progressPercent = Math.min(100, Math.max(0, (xpIntoLvl / 500) * 100));
+
+            document.getElementById('user-lvl').textContent = lvl;
+            document.getElementById('user-xp').textContent = `${playerXP}`;
+            document.getElementById('user-rank').textContent = getRank(lvl);
+            document.getElementById('xp-progress').style.width = `${progressPercent}%`;
+
+            // Проверка завершения квеста
+            const completedCount = Object.values(questStates).filter(s => s === 'win').length;
+            const statusBadge = document.querySelector('.quest-status');
+            if (completedCount === quests.length) {
+                statusBadge.textContent = "ЗАВЕРШЕН";
+                statusBadge.classList.add('completed');
+            } else {
+                statusBadge.textContent = "НЕ ЗАВЕРШЕН";
+                statusBadge.classList.remove('completed');
+            }
+        }
+
+        // --- РЕНДЕР КВЕСТОВ ---
+        function renderQuests() {
+            const container = document.getElementById('quest-timeline');
             container.innerHTML = '';
-            protocol.forEach((item, index) => {
-                const status = localStorage.getItem(`task_${item.id}`);
-                const div = document.createElement('div');
-                div.className = `t-item ${status === 'win' ? 'status-win' : status === 'fail' ? 'status-fail' : ''}`;
-                div.innerHTML = `
-                    <div class="t-time">${item.time}</div>
-                    <div class="t-content">
-                        <strong>${item.task}</strong>
+
+            quests.forEach((q, index) => {
+                const state = questStates[q.id] || 'pending';
+                const item = document.createElement('div');
+                item.className = `q-item ${state}`;
+                
+                item.innerHTML = `
+                    <div class="q-time">${q.time}</div>
+                    <div class="q-info">
+                        <div class="q-name">${q.name}</div>
+                        <div class="q-xp">+${q.xp} XP</div>
                     </div>
-                    <div class="t-actions">
-                        <button class="btn-win" onclick="setStatus(${item.id}, 'win', ${index})">✓</button>
-                        <button class="btn-fail" onclick="setStatus(${item.id}, 'fail', ${index})">X</button>
+                    <div class="q-buttons">
+                        <button class="btn-win" onclick="setQuestResult(${q.id}, 'win', ${index})">✓</button>
+                        <button class="btn-fail" onclick="setQuestResult(${q.id}, 'fail', ${index})">X</button>
                     </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(item);
             });
-            updateStats();
+            updatePlayerStatus();
         }
 
-        function setStatus(id, status, index) {
-            const prevStatus = localStorage.getItem(`task_${id}`);
-            if (prevStatus === status) return;
+        // --- ОБРАБОТКА НАЖАТИЙ [✓] и [X] ---
+        function setQuestResult(id, result, index) {
+            const prevState = questStates[id];
+            const quest = quests.find(q => q.id === id);
 
-            localStorage.setItem(`task_${id}`, status);
-            
-            if (status === 'win') {
-                userXP += protocol.find(p => p.id === id).xp;
-                dayStats[index] = 1;
-            } else {
-                if (prevStatus === 'win') userXP -= protocol.find(p => p.id === id).xp;
-                dayStats[index] = -1;
+            if (prevState === result) return; // Клик по той же кнопке
+
+            // Откат предыдущего результата
+            if (prevState === 'win') playerXP -= quest.xp;
+            if (prevState === 'fail') playerXP += Math.floor(quest.xp / 2); // Возвращаем штраф
+
+            // Применение нового результата
+            if (result === 'win') {
+                playerXP += quest.xp;
+                chartData[index] = 1;
+            } else if (result === 'fail') {
+                playerXP -= Math.floor(quest.xp / 2); // Штраф за провал
+                chartData[index] = -1;
             }
 
-            localStorage.setItem('xp', userXP);
-            localStorage.setItem('dayStats', JSON.stringify(dayStats));
-            renderTimeline();
-            updateChart();
-        }
+            // Защита от отрицательного XP
+            if (playerXP < 0) playerXP = 0;
 
-        function updateStats() {
-            document.getElementById('user-xp').textContent = userXP;
-            document.getElementById('user-level').textContent = Math.floor(userXP / 1000) + 1;
+            questStates[id] = result;
             
-            const wins = protocol.filter(p => localStorage.getItem(`task_${p.id}`) === 'win').length;
-            const progress = (wins / protocol.length) * 100;
-            document.getElementById('day-progress-bar').style.width = `${progress}%`;
+            // Сохранение
+            localStorage.setItem('sl_xp', playerXP);
+            localStorage.setItem('sl_states', JSON.stringify(questStates));
+            localStorage.setItem('sl_chart', JSON.stringify(chartData));
+
+            renderQuests();
+            updateWillpowerChart();
         }
 
-        // АККОРДЕОН
-        function toggleAccordion(id) {
+        // --- РАСКРЫВАЮЩИЕСЯ ТРЕНИРОВКИ ---
+        function toggleWorkout(id) {
             const content = document.getElementById(id);
-            const isVisible = content.style.display === 'block';
-            document.querySelectorAll('.accordion-content').forEach(c => c.style.display = 'none');
-            content.style.display = isVisible ? 'none' : 'block';
+            const btn = content.previousElementSibling;
+            const isOpened = content.classList.contains('active');
+            
+            // Закрываем все
+            document.querySelectorAll('.workout-content').forEach(c => {
+                c.classList.remove('active');
+                c.previousElementSibling.classList.remove('active');
+            });
+
+            // Открываем нужный
+            if (!isOpened) {
+                content.classList.add('active');
+                btn.classList.add('active');
+            }
         }
 
-        // ГРАФИК (Chart.js)
-        let disciplineChart;
+        // --- ГРАФИК ВОЛИ (Chart.js) ---
+        let chartInstance;
         function initChart() {
-            const ctx = document.getElementById('disciplineChart').getContext('2d');
-            disciplineChart = new Chart(ctx, {
-                type: 'line',
+            const ctx = document.getElementById('willpowerChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
                 data: {
-                    labels: protocol.map(p => p.time),
+                    labels: quests.map(q => q.time),
                     datasets: [{
-                        label: 'Дисциплина (Binary)',
-                        data: dayStats,
-                        borderColor: '#deff9a',
-                        backgroundColor: 'rgba(222, 255, 154, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true
+                        data: chartData,
+                        backgroundColor: chartData.map(v => v > 0 ? '#38bdf8' : v < 0 ? '#f43f5e' : '#27272a'),
+                        borderRadius: 6,
+                        borderSkipped: false
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: { min: -1, max: 1, grid: { color: '#27272a' }, ticks: { display: false } },
-                        x: { grid: { display: false }, ticks: { color: '#a1a1aa' } }
+                        y: { min: -1.2, max: 1.2, display: false },
+                        x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 }, color: '#a1a1aa' } }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
                 }
             });
         }
 
-        function updateChart() {
-            disciplineChart.data.datasets[0].data = dayStats;
-            disciplineChart.update();
+        function updateWillpowerChart() {
+            if (!chartInstance) return;
+            chartInstance.data.datasets[0].data = chartData;
+            chartInstance.data.datasets[0].backgroundColor = chartData.map(v => v > 0 ? '#38bdf8' : v < 0 ? '#f43f5e' : '#27272a');
+            chartInstance.update();
         }
 
-        function saveData() {
-            localStorage.setItem('commander_log', document.getElementById('daily-log').value);
-            alert("ЛОГ ЗАПИСАН. ОТПРАВЬ ЕГО ТРЕНЕРУ В ЧАТ.");
+        // --- ЛОГИ И СИНХРОНИЗАЦИЯ ---
+        function savePlayerLog() {
+            const text = document.getElementById('player-log').value;
+            localStorage.setItem('sl_log', text);
+            alert("ЖУРНАЛ ЗАПИСАН В ПАМЯТЬ СИСТЕМЫ.");
         }
 
+        function applyDirective() {
+            const input = document.getElementById('directive-input');
+            const display = document.getElementById('directive-display');
+            if (!input.value.trim()) return;
+
+            display.innerHTML = `<span style="color:#deff9a;">[ДИРЕКТИВА ПРИНЯТА]</span><br>${input.value}`;
+            localStorage.setItem('sl_directive', display.innerHTML);
+            input.value = '';
+        }
+
+        // --- ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
         window.onload = () => {
-            renderTimeline();
+            renderQuests();
             initChart();
-            if(localStorage.getItem('commander_log')) document.getElementById('daily-log').value = localStorage.getItem('commander_log');
+
+            // Восстановление текстов
+            if (localStorage.getItem('sl_log')) document.getElementById('player-log').value = localStorage.getItem('sl_log');
+            if (localStorage.getItem('sl_directive')) document.getElementById('directive-display').innerHTML = localStorage.getItem('sl_directive');
+
+            // Восстановление триггеров штрафной зоны
+            ['water', 'food', 'smoke', 'alco', 'ex'].forEach(t => {
+                const chk = document.getElementById(`t-${t}`);
+                if (localStorage.getItem(`sl_t_${t}`) === 'true') chk.checked = true;
+                chk.addEventListener('change', () => localStorage.setItem(`sl_t_${t}`, chk.checked));
+            });
         };
     </script>
 </body>
