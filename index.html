@@ -3,16 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>SYSTEM // SOLO LEVELING</title>
+    <title>SYSTEM // SOLO LEVELING v4</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SYSTEM">
     
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Urbanist:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #050506; color: #f4f4f5; font-family: 'Urbanist', sans-serif;
+            line-height: 1.4; min-height: 100vh; display: flex; flex-direction: column;
+            padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+        }
+        .status-window {
+            background-color: #0c0c0e; border-bottom: 1px solid #1f1f23;
+            padding: 15px 20px 0 20px; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .system-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .sys-title { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px; }
+        .sys-title span { color: #38bdf8; }
+        .rank-badge {
+            background: linear-gradient(90deg, #1e1e24, #2a2a32); border: 1px solid #38bdf8;
+            color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;
+            font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+        .player-stats { display: flex; gap: 10px; margin-bottom: 15px; }
+        .stat-box {
+            flex: 1; background-color: #121214; border: 1px solid #1f1f23;
+            padding: 8px 12px; border-radius: 8px; display: flex; flex-direction: column;
+        }
+        .stat-label { font-size: 0.65rem; color: #8e8e99; font-weight: 700; margin-bottom: 2px; }
+        .stat-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; color: #f4f4f5; }
+        .stat-val.accent { color: #deff9a; }
+        .stat-val.blue { color: #38bdf8; }
+        .xp-bar-container { width: calc(100% + 40px); margin-left: -20px; height: 4px; background-color: #121214; position: relative; }
+        .xp-bar-fill {
+            height: 100%; background: linear-gradient(90deg, #38bdf8, #deff9a);
+            width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 8px #38bdf8;
+        }
+        .dashboard { flex-grow: 1; display: flex; flex-direction: column; gap: 15px; padding: 15px; width: 100%; max-width: 600px; margin: 0 auto; }
+        .panel {
+            background-color: #0c0c0e; border: 1px solid #1f1f23; border-radius: 16px;
+            padding: 18px; display: flex; flex-direction: column; gap: 18px;
+        }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f23; padding-bottom: 10px; }
+        .panel-header h2 { font-size: 0.95rem; font-weight: 900; letter-spacing: 0.5px; color: #f4f4f5; }
+        .quest-status {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
+            background-color: rgba(244, 63, 94, 0.1); color: #f43f5e; padding: 4px 8px;
+            border-radius: 4px; border: 1px solid rgba(244, 63, 94, 0.2);
+        }
+        .quest-status.completed { background-color: rgba(222, 255, 154, 0.1); color: #deff9a; border-color: rgba(222, 255, 154, 0.2); }
+        .timeline { display: flex; flex-direction: column; gap: 10px; }
+        .q-item {
+            display: flex; align-items: center; gap: 12px; background-color: #121214;
+            padding: 12px; border-radius: 10px; border: 1px solid #1f1f23; transition: all 0.3s ease;
+        }
+        .q-item.win { border-color: #deff9a; background-color: rgba(222, 255, 154, 0.03); }
+        .q-item.fail { border-color: #f43f5e; background-color: rgba(244, 63, 94, 0.03); }
+        .q-time { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.85rem; color: #8e8e99; width: 45px; flex-shrink: 0; }
+        .q-item.win .q-time { color: #deff9a; }
+        .q-item.fail .q-time { color: #f43f5e; }
+        .q-info { flex-grow: 1; }
+        .q-name { font-size: 0.9rem; font-weight: 700; color: #e4e4e7; line-height: 1.2; }
+        .q-xp { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #8e8e99; margin-top: 4px; }
+        .q-buttons { display: flex; gap: 6px; }
+        .btn-win, .btn-fail {
+            width: 38px; height: 38px; border-radius: 8px; border: 1px solid #27272a;
+            background-color: #18181b; font-family: 'JetBrains Mono', monospace; font-weight: 700;
+            font-size: 1rem; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-win { color: #deff9a; }
+        .btn-fail { color: #f43f5e; }
+        .q-item.win .btn-win { background-color: #deff9a; color: #050506; border-color: #deff9a; }
+        .q-item.fail .btn-fail { background-color: #f43f5e; color: #050506; border-color: #f43f5e; }
+        
+        .tactical-workouts { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .accordion-btn {
+            width: 100%; background-color: #121214; border: 1px solid #1f1f23;
+            padding: 14px 15px; border-radius: 10px; color: #f4f4f5; font-family: 'Urbanist', sans-serif;
+            font-weight: 700; font-size: 0.85rem; display: flex; justify-content: space-between;
+            align-items: center; cursor: pointer; transition: border-color 0.2s;
+        }
+        .accordion-btn.active { border-color: #38bdf8; color: #38bdf8; }
+        .accordion-btn .arrow { font-size: 0.7rem; transition: transform 0.3s; }
+        .accordion-btn.active .arrow { transform: rotate(180deg); }
+        .workout-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); background-color: #080809; border-radius: 10px; border: 1px solid transparent; }
+        .workout-content.active { max-height: 600px; border-color: #1f1f23; margin-bottom: 5px; overflow-y: auto; }
+        .ex-item { padding: 12px 15px; border-bottom: 1px solid #121214; }
+        .ex-item:last-child { border-bottom: none; }
+        .ex-item strong { display: block; font-size: 0.85rem; color: #38bdf8; margin-bottom: 2px; }
+        .ex-item p { font-size: 0.75rem; color: #8e8e99; margin-bottom: 4px; }
+        .yt-link { display: inline-block; background-color: rgba(244, 63, 94, 0.1); color: #f43f5e; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.7rem; font-family: 'JetBrains Mono'; border: 1px solid rgba(244, 63, 94, 0.3); margin-top: 4px;}
+        
+        .penalty-box h3 { font-size: 0.8rem; color: #8e8e99; margin-bottom: 10px; }
+        .triggers-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+        .trigger-item {
+            display: flex; align-items: center; gap: 12px; background-color: #121214;
+            padding: 10px 14px; border-radius: 8px; border: 1px solid #1f1f23;
+            font-size: 0.85rem; font-weight: 700;
+        }
+        .trigger-item input { width: 18px; height: 18px; accent-color: #38bdf8; }
+        .emergency-trigger {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(244, 63, 94, 0.02));
+            border: 1px solid rgba(244, 63, 94, 0.2); padding: 12px; border-radius: 8px;
+        }
+        .emergency-trigger strong { display: block; font-size: 0.8rem; color: #f43f5e; margin-bottom: 4px; }
+        .emergency-trigger p { font-size: 0.75rem; color: #d4d4d8; }
+        .chart-container { height: 140px; width: 100%; }
+        .system-message {
+            background-color: #121214; border-radius: 10px; border: 1px solid #1f1f23;
+            border-left: 4px solid #38bdf8; overflow: hidden;
+        }
+        .msg-head { background-color: #18181b; padding: 6px 12px; font-family: 'JetBrains Mono'; font-size: 0.65rem; color: #38bdf8; font-weight: 700; }
+        .msg-body { padding: 12px; font-size: 0.8rem; color: #d4d4d8; }
+        .sync-block { display: flex; gap: 8px; }
+        .sync-block input {
+            flex-grow: 1; background-color: #050506; border: 1px solid #1f1f23;
+            border-radius: 8px; padding: 10px; color: #deff9a; font-family: 'JetBrains Mono';
+            font-size: 0.8rem; outline: none;
+        }
+        .sync-block input:focus { border-color: #38bdf8; }
+        .sync-block button {
+            background-color: #38bdf8; color: #050506; border: none; border-radius: 8px;
+            padding: 0 16px; font-family: 'JetBrains Mono'; font-weight: 700; font-size: 0.8rem;
+        }
+        .log-block { display: flex; flex-direction: column; gap: 8px; }
+        .log-head { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: #8e8e99; }
+        .log-block textarea {
+            width: 100%; min-height: 100px; background-color: #050506; border: 1px solid #1f1f23;
+            border-radius: 8px; padding: 12px; color: #38bdf8; font-family: 'Urbanist';
+            font-size: 0.85rem; resize: none; outline: none;
+        }
+        .log-block textarea:focus { border-color: #38bdf8; }
+        .save-log-btn {
+            background-color: #1f1f23; color: #f4f4f5; border: 1px solid #27272a;
+            border-radius: 8px; padding: 12px; font-weight: 700; font-size: 0.85rem;
+        }
+        .save-log-btn:active { background-color: #38bdf8; color: #050506; }
+        @media (min-width: 1024px) {
+            .dashboard { flex-direction: row; align-items: flex-start; max-width: 1200px; }
+            .quest-panel { width: 55%; }
+            .system-panel { width: 45%; position: sticky; top: 105px; }
+        }
+    </style>
 </head>
 <body>
 
@@ -23,111 +165,91 @@
         </div>
         
         <div class="player-stats">
-            <div class="stat-box">
-                <span class="stat-label">УРОВЕНЬ</span>
-                <span class="stat-val" id="user-lvl">1</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label">ОПЫТ (XP)</span>
-                <span class="stat-val accent" id="user-xp">0</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-label">СЕРИЯ ДНЕЙ</span>
-                <span class="stat-val blue" id="user-streak">1</span>
-            </div>
+            <div class="stat-box"><span class="stat-label">УРОВЕНЬ</span><span class="stat-val" id="user-lvl">2</span></div>
+            <div class="stat-box"><span class="stat-label">ОПЫТ (XP)</span><span class="stat-val accent" id="user-xp">0</span></div>
+            <div class="stat-box"><span class="stat-label">СЕРИЯ ДНЕЙ</span><span class="stat-val blue" id="user-streak">2</span></div>
         </div>
         
-        <div class="xp-bar-container">
-            <div class="xp-bar-fill" id="xp-progress"></div>
-        </div>
+        <div class="xp-bar-container"><div class="xp-bar-fill" id="xp-progress"></div></div>
     </header>
 
     <main class="dashboard">
         <section class="panel quest-panel">
             <div class="panel-header">
-                <h2>⚠️ ЕЖЕДНЕВНЫЙ КВЕСТ: НАСТУПЛЕНИЕ</h2>
+                <h2>⚠️ ЕЖЕДНЕВНЫЙ КВЕСТ: РЕЖИМ БОГА</h2>
                 <span class="quest-status">НЕ ЗАВЕРШЕН</span>
             </div>
 
-            <div class="timeline" id="quest-timeline">
-                </div>
+            <div class="timeline" id="quest-timeline"></div>
 
             <div class="tactical-workouts">
                 <button class="accordion-btn" onclick="toggleWorkout('am-details')">
-                    <span>⚡ AM CORE // УТРЕННЯЯ БАЗА</span>
-                    <span class="arrow">▼</span>
+                    <span>⚡ AM CORE // УТРЕННИЙ АД</span><span class="arrow">▼</span>
                 </button>
                 <div id="am-details" class="workout-content">
                     <div class="ex-item">
-                        <strong>1. Бег по стадиону (Кардио)</strong>
-                        <p>Цель: 3 круга (1.2 км). Запуск лимфосистемы после сна.</p>
+                        <strong>1. Стадион (Кардио)</strong>
+                        <p>3 круга (1.2 км) без остановок. Запуск дыхалки.</p>
                     </div>
                     <div class="ex-item">
-                        <strong>2. Пресс на турнике</strong>
-                        <p>Цель: 3 подхода по 10 подъемов ног к перекладине.</p>
-                    </div>
-                    <div class="ex-item">
-                        <strong>3. Железная планка</strong>
-                        <p>Цель: 1 минута идеального удержания.</p>
+                        <strong>2. GymFit Пресс (20 мин)</strong>
+                        <p>V-скручивания, планки, альпинист. Выжечь кор.</p>
+                        <a href="https://youtu.be/p4OLS1iByYA?si=hbh8CIDLoZmC9iMp" target="_blank" class="yt-link">▶ ОТКРЫТЬ ВИДЕО</a>
                     </div>
                 </div>
 
                 <button class="accordion-btn" onclick="toggleWorkout('pm-details')">
-                    <span>💥 PM HARD // СИЛОВОЕ УНИЧТОЖЕНИЕ</span>
-                    <span class="arrow">▼</span>
+                    <span>💥 PM HARD // УЛИЦА + ГАНТЕЛИ</span><span class="arrow">▼</span>
                 </button>
                 <div id="pm-details" class="workout-content">
                     <div class="ex-item">
-                        <strong>1. Улица: Спина и Грудь</strong>
-                        <p>Подтягивания на турнике: 4 подхода до отказа.<br>Отжимания на брусьях: 4 подхода по 12-15 раз.</p>
+                        <strong>1. База (Улица)</strong>
+                        <p>Подтягивания: 4 сета (до отказа).<br>Брусья: 4 сета (Если немеет палец - отжимания от пола!).</p>
                     </div>
                     <div class="ex-item">
-                        <strong>2. Дом: Добивка гантелями (10 кг)</strong>
-                        <p>Жим гантелей стоя (плечи): 3 подхода по 12 раз.<br>Подъем на бицепс: 3 подхода по 10 раз.<br>Приседания с весом: 3 подхода по 20 раз.</p>
+                        <strong>2. Изоляция (Дом)</strong>
+                        <p>Протокол Chris Heria (3 круга). Хват, Бицепс, Трицепс, Плечи.</p>
+                        <a href="https://youtu.be/2MlZSv6L37k?si=WrfWBq8ftUR-Hjhq" target="_blank" class="yt-link">▶ ОТКРЫТЬ ВИДЕО</a>
                     </div>
                 </div>
             </div>
 
             <div class="penalty-box">
-                <h3>КОНТРОЛЬ ШТРАФНОЙ ЗОНЫ</h3>
+                <h3>ШТРАФНАЯ ЗОНА (ДЕБАФФЫ СИСТЕМЫ)</h3>
                 <div class="triggers-grid">
                     <label class="trigger-item"><input type="checkbox" id="t-water"><span>Вода 3Л</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-food"><span>Еда без сахара</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-smoke"><span>0 Сигарет</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-alco"><span>0 Пива/Алко</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-ex"><span>0 Бывшая</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-food"><span>Еда: Белок+Углеводы+Овощи</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-sleep"><span>0 Дневного сна (Бой с DMN)</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-nofap"><span>0 Порно/Нофап</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-smoke"><span>0 Сигарет / Алко</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-ex"><span>0 Прошлого (Бывшая)</span></label>
                 </div>
                 <div class="emergency-trigger">
-                    <strong>🔥 НАКРЫВАЕТ ЛЕНЬ ИЛИ ТЯГА?</strong>
-                    <p>Система требует: 30 отжиманий прямо сейчас. Выпей ледяной воды. Сбрось дебафф.</p>
+                    <strong>🔥 НАКРЫВАЕТ ЛЕНЬ ИЛИ СОН ДНЕМ?</strong>
+                    <p>Система требует: 20 приседаний / ледяная вода в лицо. Сбрось дебафф.</p>
                 </div>
             </div>
         </section>
 
         <section class="panel system-panel">
-            <div class="panel-header">
-                <h2>ГРАФИК ИНДЕКСА ВОЛИ</h2>
-            </div>
-
-            <div class="chart-container">
-                <canvas id="willpowerChart"></canvas>
-            </div>
-
+            <div class="panel-header"><h2>ИНДЕКС ВОЛИ</h2></div>
+            <div class="chart-container"><canvas id="willpowerChart"></canvas></div>
+            
             <div class="system-message">
                 <div class="msg-head">СИСТЕМНОЕ УВЕДОМЛЕНИЕ</div>
                 <div class="msg-body" id="directive-display">
-                    Испытание Игрока началось. Заполняй шкалу опыта, закрывая задачи. Провал (X) приведет к потере статов. Докажи, что готов к Пробуждению.
+                    Патч v4.0 установлен. Сложность повышена. Дневной сон отключен. Каждое действие записывается.
                 </div>
             </div>
 
             <div class="sync-block">
-                <input type="text" id="directive-input" placeholder="Код синхронизации от Системы...">
+                <input type="text" id="directive-input" placeholder="Код от Системы...">
                 <button onclick="applyDirective()">ВВОД</button>
             </div>
 
             <div class="log-block">
                 <div class="log-head">ЖУРНАЛ ИГРОКА // ВЕЧЕРНИЙ ОТЧЕТ</div>
-                <textarea id="player-log" placeholder="[21:30] Зафиксируй здесь: сколько плакатов сделал, реакцию мышц и попытки старого мозга сдаться..."></textarea>
+                <textarea id="player-log" placeholder="[21:30] Зафиксируй прогресс в дизайне, питании и тренировках..."></textarea>
                 <button class="save-log-btn" onclick="savePlayerLog()">СОХРАНИТЬ ЛОГ</button>
             </div>
         </section>
@@ -135,23 +257,24 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // --- БАЗА ДАННЫХ КВЕСТА ---
+        // ОБНОВЛЕННЫЙ МАССИВ КВЕСТОВ НА ДЕНЬ
         const quests = [
-            { id: 1, time: "06:00", name: "Подъем + Ледяной душ", xp: 50 },
-            { id: 2, time: "06:30", name: "AM CORE (Утренний воркаут)", xp: 100 },
-            { id: 3, time: "08:00", name: "DEEP DEV (Прокачка скиллов)", xp: 150 },
-            { id: 4, time: "12:00", name: "OFFENSIVE (Дизайн + 10 писем)", xp: 250 },
-            { id: 5, time: "19:00", name: "PM HARD (Силовой предел)", xp: 200 },
-            { id: 6, time: "21:30", name: "Синхронизация лога", xp: 50 },
-            { id: 7, time: "22:30", name: "Сон (Регенерация)", xp: 50 }
+            { id: 1, time: "06:00", name: "Подъем + Ледяное лицо", xp: 50 },
+            { id: 2, time: "06:20", name: "AM CORE: Бег + GymFit", xp: 150 },
+            { id: 3, time: "07:15", name: "Прохладный душ + Завтрак", xp: 50 },
+            { id: 4, time: "08:00", name: "DEEP DEV: Дизайн и Код", xp: 150 },
+            { id: 5, time: "12:00", name: "OFFENSIVE: 10 Писем", xp: 200 },
+            { id: 6, time: "13:30", name: "Обед + Протокол Анти-Сон", xp: 100 },
+            { id: 7, time: "19:00", name: "PM HARD: Улица + Chris Heria", xp: 250 },
+            { id: 8, time: "20:30", name: "Теплый душ + Ужин", xp: 50 },
+            { id: 9, time: "21:30", name: "Синхронизация Лога", xp: 50 },
+            { id: 10, time: "22:00", name: "Творог + Отбой (22:30)", xp: 50 }
         ];
 
-        // --- СОСТОЯНИЕ ИГРОКА ---
-        let playerXP = parseInt(localStorage.getItem('sl_xp')) || 0;
+        let playerXP = parseInt(localStorage.getItem('sl_xp')) || 500; // Немного базы за 2 дня
         let questStates = JSON.parse(localStorage.getItem('sl_states')) || {};
-        let chartData = JSON.parse(localStorage.getItem('sl_chart')) || [0, 0, 0, 0, 0, 0, 0];
+        let chartData = JSON.parse(localStorage.getItem('sl_chart')) || Array(10).fill(0);
 
-        // --- ОПРЕДЕЛЕНИЕ РАНГА ---
         function getRank(lvl) {
             if (lvl >= 50) return "S-RANK";
             if (lvl >= 30) return "A-RANK";
@@ -161,47 +284,36 @@
             return "E-RANK";
         }
 
-        // --- ОБНОВЛЕНИЕ ИНТЕРФЕЙСА СТАТУСА ---
         function updatePlayerStatus() {
             const lvl = Math.floor(playerXP / 500) + 1;
             const currentLvlBaseXP = (lvl - 1) * 500;
-            const nextLvlXP = lvl * 500;
             const xpIntoLvl = playerXP - currentLvlBaseXP;
             const progressPercent = Math.min(100, Math.max(0, (xpIntoLvl / 500) * 100));
 
             document.getElementById('user-lvl').textContent = lvl;
-            document.getElementById('user-xp').textContent = `${playerXP}`;
+            document.getElementById('user-xp').textContent = playerXP;
             document.getElementById('user-rank').textContent = getRank(lvl);
             document.getElementById('xp-progress').style.width = `${progressPercent}%`;
 
-            // Проверка завершения квеста
             const completedCount = Object.values(questStates).filter(s => s === 'win').length;
             const statusBadge = document.querySelector('.quest-status');
             if (completedCount === quests.length) {
-                statusBadge.textContent = "ЗАВЕРШЕН";
-                statusBadge.classList.add('completed');
+                statusBadge.textContent = "ЗАВЕРШЕН"; statusBadge.classList.add('completed');
             } else {
-                statusBadge.textContent = "НЕ ЗАВЕРШЕН";
-                statusBadge.classList.remove('completed');
+                statusBadge.textContent = "НЕ ЗАВЕРШЕН"; statusBadge.classList.remove('completed');
             }
         }
 
-        // --- РЕНДЕР КВЕСТОВ ---
         function renderQuests() {
             const container = document.getElementById('quest-timeline');
             container.innerHTML = '';
-
             quests.forEach((q, index) => {
                 const state = questStates[q.id] || 'pending';
                 const item = document.createElement('div');
                 item.className = `q-item ${state}`;
-                
                 item.innerHTML = `
                     <div class="q-time">${q.time}</div>
-                    <div class="q-info">
-                        <div class="q-name">${q.name}</div>
-                        <div class="q-xp">+${q.xp} XP</div>
-                    </div>
+                    <div class="q-info"><div class="q-name">${q.name}</div><div class="q-xp">+${q.xp} XP</div></div>
                     <div class="q-buttons">
                         <button class="btn-win" onclick="setQuestResult(${q.id}, 'win', ${index})">✓</button>
                         <button class="btn-fail" onclick="setQuestResult(${q.id}, 'fail', ${index})">X</button>
@@ -212,60 +324,39 @@
             updatePlayerStatus();
         }
 
-        // --- ОБРАБОТКА НАЖАТИЙ [✓] и [X] ---
         function setQuestResult(id, result, index) {
             const prevState = questStates[id];
             const quest = quests.find(q => q.id === id);
+            if (prevState === result) return;
 
-            if (prevState === result) return; // Клик по той же кнопке
-
-            // Откат предыдущего результата
             if (prevState === 'win') playerXP -= quest.xp;
-            if (prevState === 'fail') playerXP += Math.floor(quest.xp / 2); // Возвращаем штраф
+            if (prevState === 'fail') playerXP += Math.floor(quest.xp / 2);
 
-            // Применение нового результата
-            if (result === 'win') {
-                playerXP += quest.xp;
-                chartData[index] = 1;
-            } else if (result === 'fail') {
-                playerXP -= Math.floor(quest.xp / 2); // Штраф за провал
-                chartData[index] = -1;
-            }
+            if (result === 'win') { playerXP += quest.xp; chartData[index] = 1; } 
+            else if (result === 'fail') { playerXP -= Math.floor(quest.xp / 2); chartData[index] = -1; }
 
-            // Защита от отрицательного XP
             if (playerXP < 0) playerXP = 0;
-
             questStates[id] = result;
             
-            // Сохранение
             localStorage.setItem('sl_xp', playerXP);
             localStorage.setItem('sl_states', JSON.stringify(questStates));
             localStorage.setItem('sl_chart', JSON.stringify(chartData));
 
-            renderQuests();
-            updateWillpowerChart();
+            renderQuests(); updateWillpowerChart();
         }
 
-        // --- РАСКРЫВАЮЩИЕСЯ ТРЕНИРОВКИ ---
         function toggleWorkout(id) {
             const content = document.getElementById(id);
             const btn = content.previousElementSibling;
             const isOpened = content.classList.contains('active');
             
-            // Закрываем все
             document.querySelectorAll('.workout-content').forEach(c => {
-                c.classList.remove('active');
-                c.previousElementSibling.classList.remove('active');
+                c.classList.remove('active'); c.previousElementSibling.classList.remove('active');
             });
 
-            // Открываем нужный
-            if (!isOpened) {
-                content.classList.add('active');
-                btn.classList.add('active');
-            }
+            if (!isOpened) { content.classList.add('active'); btn.classList.add('active'); }
         }
 
-        // --- ГРАФИК ВОЛИ (Chart.js) ---
         let chartInstance;
         function initChart() {
             const ctx = document.getElementById('willpowerChart').getContext('2d');
@@ -273,20 +364,11 @@
                 type: 'bar',
                 data: {
                     labels: quests.map(q => q.time),
-                    datasets: [{
-                        data: chartData,
-                        backgroundColor: chartData.map(v => v > 0 ? '#38bdf8' : v < 0 ? '#f43f5e' : '#27272a'),
-                        borderRadius: 6,
-                        borderSkipped: false
-                    }]
+                    datasets: [{ data: chartData, backgroundColor: chartData.map(v => v > 0 ? '#38bdf8' : v < 0 ? '#f43f5e' : '#27272a'), borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { min: -1.2, max: 1.2, display: false },
-                        x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 }, color: '#a1a1aa' } }
-                    },
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { min: -1.2, max: 1.2, display: false }, x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 }, color: '#a1a1aa' } } },
                     plugins: { legend: { display: false }, tooltip: { enabled: false } }
                 }
             });
@@ -299,10 +381,8 @@
             chartInstance.update();
         }
 
-        // --- ЛОГИ И СИНХРОНИЗАЦИЯ ---
         function savePlayerLog() {
-            const text = document.getElementById('player-log').value;
-            localStorage.setItem('sl_log', text);
+            localStorage.setItem('sl_log', document.getElementById('player-log').value);
             alert("ЖУРНАЛ ЗАПИСАН В ПАМЯТЬ СИСТЕМЫ.");
         }
 
@@ -310,23 +390,18 @@
             const input = document.getElementById('directive-input');
             const display = document.getElementById('directive-display');
             if (!input.value.trim()) return;
-
             display.innerHTML = `<span style="color:#deff9a;">[ДИРЕКТИВА ПРИНЯТА]</span><br>${input.value}`;
             localStorage.setItem('sl_directive', display.innerHTML);
             input.value = '';
         }
 
-        // --- ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ---
         window.onload = () => {
-            renderQuests();
-            initChart();
-
-            // Восстановление текстов
+            renderQuests(); initChart();
             if (localStorage.getItem('sl_log')) document.getElementById('player-log').value = localStorage.getItem('sl_log');
             if (localStorage.getItem('sl_directive')) document.getElementById('directive-display').innerHTML = localStorage.getItem('sl_directive');
-
-            // Восстановление триггеров штрафной зоны
-            ['water', 'food', 'smoke', 'alco', 'ex'].forEach(t => {
+            
+            // Восстановление всех триггеров
+            ['water', 'food', 'sleep', 'nofap', 'smoke', 'ex'].forEach(t => {
                 const chk = document.getElementById(`t-${t}`);
                 if (localStorage.getItem(`sl_t_${t}`) === 'true') chk.checked = true;
                 chk.addEventListener('change', () => localStorage.setItem(`sl_t_${t}`, chk.checked));
