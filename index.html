@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>SYSTEM // SOLO LEVELING v4</title>
+    <title>SYSTEM // GUILD INTERFACE v6.0</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SYSTEM">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,139 +19,130 @@
             line-height: 1.4; min-height: 100vh; display: flex; flex-direction: column;
             padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
         }
+        
+        /* СТАТУС-БАР */
         .status-window {
             background-color: #0c0c0e; border-bottom: 1px solid #1f1f23;
-            padding: 15px 20px 0 20px; position: sticky; top: 0; z-index: 100;
+            padding: 15px 20px 10px 20px; position: sticky; top: 0; z-index: 100;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         .system-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .sys-title { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px; }
+        .sys-title { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; }
         .sys-title span { color: #38bdf8; }
         .rank-badge {
             background: linear-gradient(90deg, #1e1e24, #2a2a32); border: 1px solid #38bdf8;
             color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;
             font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
         }
-        .player-stats { display: flex; gap: 10px; margin-bottom: 15px; }
+        .player-stats { display: flex; gap: 10px; }
         .stat-box {
             flex: 1; background-color: #121214; border: 1px solid #1f1f23;
             padding: 8px 12px; border-radius: 8px; display: flex; flex-direction: column;
         }
-        .stat-label { font-size: 0.65rem; color: #8e8e99; font-weight: 700; margin-bottom: 2px; }
-        .stat-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; color: #f4f4f5; }
+        .stat-label { font-size: 0.65rem; color: #8e8e99; font-weight: 700; }
+        .stat-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; }
         .stat-val.accent { color: #deff9a; }
         .stat-val.blue { color: #38bdf8; }
-        .xp-bar-container { width: calc(100% + 40px); margin-left: -20px; height: 4px; background-color: #121214; position: relative; }
-        .xp-bar-fill {
-            height: 100%; background: linear-gradient(90deg, #38bdf8, #deff9a);
-            width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 8px #38bdf8;
+
+        /* НАВИГАЦИЯ ВКЛАДОК */
+        .tab-nav {
+            display: flex; background-color: #0c0c0e; border-bottom: 1px solid #1f1f23;
+            position: sticky; top: 97px; z-index: 99;
         }
-        .dashboard { flex-grow: 1; display: flex; flex-direction: column; gap: 15px; padding: 15px; width: 100%; max-width: 600px; margin: 0 auto; }
+        .tab-link {
+            flex: 1; text-align: center; padding: 12px 0; background: none; border: none;
+            color: #71717a; font-family: 'JetBrains Mono'; font-size: 0.75rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent;
+        }
+        .tab-link.active { color: #38bdf8; border-bottom-color: #38bdf8; background-color: rgba(56,189,248,0.02); }
+        
+        /* КОНТЕНТ */
+        .dashboard { flex-grow: 1; padding: 15px; width: 100%; max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
+        .tab-content { display: none; flex-direction: column; gap: 15px; }
+        .tab-content.active { display: flex; }
+        
         .panel {
-            background-color: #0c0c0e; border: 1px solid #1f1f23; border-radius: 16px;
-            padding: 18px; display: flex; flex-direction: column; gap: 18px;
+            background-color: #0c0c0e; border: 1px solid #1f1f23; border-radius: 16px; padding: 18px;
         }
-        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f23; padding-bottom: 10px; }
-        .panel-header h2 { font-size: 0.95rem; font-weight: 900; letter-spacing: 0.5px; color: #f4f4f5; }
-        .quest-status {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700;
-            background-color: rgba(244, 63, 94, 0.1); color: #f43f5e; padding: 4px 8px;
-            border-radius: 4px; border: 1px solid rgba(244, 63, 94, 0.2);
-        }
-        .quest-status.completed { background-color: rgba(222, 255, 154, 0.1); color: #deff9a; border-color: rgba(222, 255, 154, 0.2); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f23; padding-bottom: 10px; margin-bottom: 15px; }
+        .panel-header h2 { font-size: 0.95rem; font-weight: 900; letter-spacing: 0.5px; }
+        
+        /* КВЕСТЫ */
         .timeline { display: flex; flex-direction: column; gap: 10px; }
         .q-item {
             display: flex; align-items: center; gap: 12px; background-color: #121214;
-            padding: 12px; border-radius: 10px; border: 1px solid #1f1f23; transition: all 0.3s ease;
+            padding: 12px; border-radius: 10px; border: 1px solid #1f1f23;
         }
-        .q-item.win { border-color: #deff9a; background-color: rgba(222, 255, 154, 0.03); }
-        .q-item.fail { border-color: #f43f5e; background-color: rgba(244, 63, 94, 0.03); }
-        .q-time { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.85rem; color: #8e8e99; width: 45px; flex-shrink: 0; }
+        .q-item.win { border-color: #deff9a; background-color: rgba(222, 255, 154, 0.02); }
+        .q-item.fail { border-color: #f43f5e; background-color: rgba(244, 63, 94, 0.02); }
+        .q-time { font-family: 'JetBrains Mono'; font-weight: 700; font-size: 0.85rem; color: #8e8e99; width: 45px; }
         .q-item.win .q-time { color: #deff9a; }
         .q-item.fail .q-time { color: #f43f5e; }
-        .q-info { flex-grow: 1; }
-        .q-name { font-size: 0.9rem; font-weight: 700; color: #e4e4e7; line-height: 1.2; }
-        .q-xp { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #8e8e99; margin-top: 4px; }
+        .q-name { font-size: 0.9rem; font-weight: 700; flex-grow: 1; }
         .q-buttons { display: flex; gap: 6px; }
         .btn-win, .btn-fail {
-            width: 38px; height: 38px; border-radius: 8px; border: 1px solid #27272a;
-            background-color: #18181b; font-family: 'JetBrains Mono', monospace; font-weight: 700;
-            font-size: 1rem; cursor: pointer; transition: all 0.2s;
+            width: 36px; height: 36px; border-radius: 6px; border: 1px solid #27272a;
+            background-color: #18181b; font-family: 'JetBrains Mono'; font-weight: 700; cursor: pointer;
         }
-        .btn-win { color: #deff9a; }
-        .btn-fail { color: #f43f5e; }
-        .q-item.win .btn-win { background-color: #deff9a; color: #050506; border-color: #deff9a; }
-        .q-item.fail .btn-fail { background-color: #f43f5e; color: #050506; border-color: #f43f5e; }
-        
-        .tactical-workouts { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
-        .accordion-btn {
-            width: 100%; background-color: #121214; border: 1px solid #1f1f23;
-            padding: 14px 15px; border-radius: 10px; color: #f4f4f5; font-family: 'Urbanist', sans-serif;
-            font-weight: 700; font-size: 0.85rem; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; transition: border-color 0.2s;
-        }
-        .accordion-btn.active { border-color: #38bdf8; color: #38bdf8; }
-        .accordion-btn .arrow { font-size: 0.7rem; transition: transform 0.3s; }
-        .accordion-btn.active .arrow { transform: rotate(180deg); }
-        .workout-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); background-color: #080809; border-radius: 10px; border: 1px solid transparent; }
-        .workout-content.active { max-height: 600px; border-color: #1f1f23; margin-bottom: 5px; overflow-y: auto; }
-        .ex-item { padding: 12px 15px; border-bottom: 1px solid #121214; }
-        .ex-item:last-child { border-bottom: none; }
-        .ex-item strong { display: block; font-size: 0.85rem; color: #38bdf8; margin-bottom: 2px; }
-        .ex-item p { font-size: 0.75rem; color: #8e8e99; margin-bottom: 4px; }
-        .yt-link { display: inline-block; background-color: rgba(244, 63, 94, 0.1); color: #f43f5e; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.7rem; font-family: 'JetBrains Mono'; border: 1px solid rgba(244, 63, 94, 0.3); margin-top: 4px;}
-        
-        .penalty-box h3 { font-size: 0.8rem; color: #8e8e99; margin-bottom: 10px; }
-        .triggers-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+        .btn-win { color: #deff9a; } .btn-fail { color: #f43f5e; }
+        .q-item.win .btn-win { background-color: #deff9a; color: #050506; }
+        .q-item.fail .btn-fail { background-color: #f43f5e; color: #050506; }
+
+        /* ДЕБАФФЫ */
+        .triggers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
         .trigger-item {
-            display: flex; align-items: center; gap: 12px; background-color: #121214;
-            padding: 10px 14px; border-radius: 8px; border: 1px solid #1f1f23;
-            font-size: 0.85rem; font-weight: 700;
+            display: flex; align-items: center; gap: 10px; background-color: #121214;
+            padding: 12px; border-radius: 8px; border: 1px solid #1f1f23; font-size: 0.8rem; font-weight: 700;
         }
-        .trigger-item input { width: 18px; height: 18px; accent-color: #38bdf8; }
-        .emergency-trigger {
-            background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(244, 63, 94, 0.02));
-            border: 1px solid rgba(244, 63, 94, 0.2); padding: 12px; border-radius: 8px;
+        .trigger-item input { width: 16px; height: 16px; accent-color: #38bdf8; }
+
+        /* ИИ СКАНЕР ФОТО */
+        .scanner-zone {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 2px dashed #1f1f23; border-radius: 12px; padding: 30px 20px; position: relative;
+            background-color: #121214; cursor: pointer; transition: border-color 0.2s;
         }
-        .emergency-trigger strong { display: block; font-size: 0.8rem; color: #f43f5e; margin-bottom: 4px; }
-        .emergency-trigger p { font-size: 0.75rem; color: #d4d4d8; }
-        .chart-container { height: 140px; width: 100%; }
+        .scanner-zone:hover { border-color: #38bdf8; }
+        .scanner-zone input { display: none; }
+        .scan-icon { font-size: 2rem; color: #38bdf8; margin-bottom: 10px; }
+        .scan-text { font-size: 0.85rem; color: #8e8e99; text-align: center; }
+        .preview-img { max-width: 100%; max-height: 250px; border-radius: 8px; display: none; margin-top: 15px; border: 1px solid #1f1f23; }
+        
+        .scan-btn {
+            width: 100%; background-color: #38bdf8; color: #050506; font-family: 'JetBrains Mono';
+            font-weight: 700; font-size: 0.85rem; padding: 12px; border: none; border-radius: 8px;
+            cursor: pointer; margin-top: 15px; display: none;
+        }
+        .scan-progress-bar {
+            width: 100%; height: 4px; background-color: #18181b; border-radius: 2px;
+            margin-top: 15px; display: none; overflow: hidden;
+        }
+        .scan-progress-fill { height: 100%; background-color: #deff9a; width: 0%; transition: width 3s linear; }
+        
+        .analysis-report {
+            background-color: #121214; border: 1px solid #1f1f23; border-left: 4px solid #deff9a;
+            border-radius: 8px; padding: 15px; display: none; margin-top: 15px; font-family: 'JetBrains Mono'; font-size: 0.75rem;
+        }
+        .report-line { display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px dashed #1f1f23; padding-bottom: 4px; }
+        .report-line span:last-child { color: #deff9a; font-weight: 700; }
+
+        /* АНАЛИТИКА / ГРАФИК */
+        .chart-container { height: 220px; width: 100%; margin-top: 10px; }
+        
         .system-message {
             background-color: #121214; border-radius: 10px; border: 1px solid #1f1f23;
-            border-left: 4px solid #38bdf8; overflow: hidden;
+            border-left: 4px solid #38bdf8; margin-top: 15px;
         }
         .msg-head { background-color: #18181b; padding: 6px 12px; font-family: 'JetBrains Mono'; font-size: 0.65rem; color: #38bdf8; font-weight: 700; }
         .msg-body { padding: 12px; font-size: 0.8rem; color: #d4d4d8; }
-        .sync-block { display: flex; gap: 8px; }
-        .sync-block input {
-            flex-grow: 1; background-color: #050506; border: 1px solid #1f1f23;
-            border-radius: 8px; padding: 10px; color: #deff9a; font-family: 'JetBrains Mono';
-            font-size: 0.8rem; outline: none;
-        }
-        .sync-block input:focus { border-color: #38bdf8; }
-        .sync-block button {
-            background-color: #38bdf8; color: #050506; border: none; border-radius: 8px;
-            padding: 0 16px; font-family: 'JetBrains Mono'; font-weight: 700; font-size: 0.8rem;
-        }
-        .log-block { display: flex; flex-direction: column; gap: 8px; }
-        .log-head { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: #8e8e99; }
+        
+        .log-block { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
         .log-block textarea {
-            width: 100%; min-height: 100px; background-color: #050506; border: 1px solid #1f1f23;
-            border-radius: 8px; padding: 12px; color: #38bdf8; font-family: 'Urbanist';
-            font-size: 0.85rem; resize: none; outline: none;
+            width: 100%; min-height: 80px; background-color: #050506; border: 1px solid #1f1f23;
+            border-radius: 8px; padding: 12px; color: #38bdf8; font-family: 'Urbanist'; font-size: 0.85rem; resize: none; outline: none;
         }
-        .log-block textarea:focus { border-color: #38bdf8; }
         .save-log-btn {
-            background-color: #1f1f23; color: #f4f4f5; border: 1px solid #27272a;
-            border-radius: 8px; padding: 12px; font-weight: 700; font-size: 0.85rem;
-        }
-        .save-log-btn:active { background-color: #38bdf8; color: #050506; }
-        @media (min-width: 1024px) {
-            .dashboard { flex-direction: row; align-items: flex-start; max-width: 1200px; }
-            .quest-panel { width: 55%; }
-            .system-panel { width: 45%; position: sticky; top: 105px; }
+            background-color: #1f1f23; color: #f4f4f5; border: 1px solid #27272a; border-radius: 8px; padding: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer;
         }
     </style>
 </head>
@@ -160,148 +150,116 @@
 
     <header class="status-window">
         <div class="system-header">
-            <div class="sys-title">СИСТЕМА <span>// ИГРОК</span></div>
-            <div class="rank-badge" id="user-rank">E-RANK</div>
+            <div class="sys-title">СИСТЕМА <span>// ГИЛЬДИЯ</span></div>
+            <div class="rank-badge">E-RANK</div>
         </div>
-        
         <div class="player-stats">
-            <div class="stat-box"><span class="stat-label">УРОВЕНЬ</span><span class="stat-val" id="user-lvl">2</span></div>
-            <div class="stat-box"><span class="stat-label">ОПЫТ (XP)</span><span class="stat-val accent" id="user-xp">0</span></div>
-            <div class="stat-box"><span class="stat-label">СЕРИЯ ДНЕЙ</span><span class="stat-val blue" id="user-streak">2</span></div>
+            <div class="stat-box"><span class="stat-label">УРОВЕНЬ</span><span class="stat-val">2</span></div>
+            <div class="stat-box"><span class="stat-label">ОПЫТ ГИЛЬДИИ</span><span class="stat-val accent" id="total-xp">550</span></div>
+            <div class="stat-box"><span class="stat-label">АКТИВНЫЕ ИГРОКИ</span><span class="stat-val blue">2</span></div>
         </div>
-        
-        <div class="xp-bar-container"><div class="xp-bar-fill" id="xp-progress"></div></div>
     </header>
 
+    <nav class="tab-nav">
+        <button class="tab-link active" onclick="switchTab('tab-quests', this)">КВЕСТЫ</button>
+        <button class="tab-link" onclick="switchTab('tab-scanner', this)">СКАНЕР АВАТАРА</button>
+        <button class="tab-link" onclick="switchTab('tab-history', this)">ИСТОРИЯ ВОЛИ</button>
+    </nav>
+
     <main class="dashboard">
-        <section class="panel quest-panel">
-            <div class="panel-header">
-                <h2>⚠️ ЕЖЕДНЕВНЫЙ КВЕСТ: РЕЖИМ БОГА</h2>
-                <span class="quest-status">НЕ ЗАВЕРШЕН</span>
-            </div>
-
-            <div class="timeline" id="quest-timeline"></div>
-
-            <div class="tactical-workouts">
-                <button class="accordion-btn" onclick="toggleWorkout('am-details')">
-                    <span>⚡ AM CORE // УТРЕННИЙ АД</span><span class="arrow">▼</span>
-                </button>
-                <div id="am-details" class="workout-content">
-                    <div class="ex-item">
-                        <strong>1. Стадион (Кардио)</strong>
-                        <p>3 круга (1.2 км) без остановок. Запуск дыхалки.</p>
-                    </div>
-                    <div class="ex-item">
-                        <strong>2. GymFit Пресс (20 мин)</strong>
-                        <p>V-скручивания, планки, альпинист. Выжечь кор.</p>
-                        <a href="https://youtu.be/p4OLS1iByYA?si=hbh8CIDLoZmC9iMp" target="_blank" class="yt-link">▶ ОТКРЫТЬ ВИДЕО</a>
-                    </div>
+        
+        <div id="tab-quests" class="tab-content active">
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>⚠️ ЕЖЕДНЕВНЫЙ ТАКТИЧЕСКИЙ ЦИКЛ</h2>
                 </div>
-
-                <button class="accordion-btn" onclick="toggleWorkout('pm-details')">
-                    <span>💥 PM HARD // УЛИЦА + ГАНТЕЛИ</span><span class="arrow">▼</span>
-                </button>
-                <div id="pm-details" class="workout-content">
-                    <div class="ex-item">
-                        <strong>1. База (Улица)</strong>
-                        <p>Подтягивания: 4 сета (до отказа).<br>Брусья: 4 сета (Если немеет палец - отжимания от пола!).</p>
-                    </div>
-                    <div class="ex-item">
-                        <strong>2. Изоляция (Дом)</strong>
-                        <p>Протокол Chris Heria (3 круга). Хват, Бицепс, Трицепс, Плечи.</p>
-                        <a href="https://youtu.be/2MlZSv6L37k?si=WrfWBq8ftUR-Hjhq" target="_blank" class="yt-link">▶ ОТКРЫТЬ ВИДЕО</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="penalty-box">
-                <h3>ШТРАФНАЯ ЗОНА (ДЕБАФФЫ СИСТЕМЫ)</h3>
+                <div class="timeline" id="quest-timeline"></div>
+            </section>
+            
+            <section class="panel">
+                <div class="panel-header"><h2>КОНТРОЛЬ ДЕБАФФОВ</h2></div>
                 <div class="triggers-grid">
                     <label class="trigger-item"><input type="checkbox" id="t-water"><span>Вода 3Л</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-food"><span>Еда: Белок+Углеводы+Овощи</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-sleep"><span>0 Дневного сна (Бой с DMN)</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-nofap"><span>0 Порно/Нофап</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-smoke"><span>0 Сигарет / Алко</span></label>
-                    <label class="trigger-item"><input type="checkbox" id="t-ex"><span>0 Прошлого (Бывшая)</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-food"><span>Чистое Топливо</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-sleep"><span>Без дневного сна</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-nofap"><span>NoFap Протокол</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-smoke"><span>0 Алко / 0 Никотин</span></label>
+                    <label class="trigger-item"><input type="checkbox" id="t-ex"><span>0 Прошлого</span></label>
                 </div>
-                <div class="emergency-trigger">
-                    <strong>🔥 НАКРЫВАЕТ ЛЕНЬ ИЛИ СОН ДНЕМ?</strong>
-                    <p>Система требует: 20 приседаний / ледяная вода в лицо. Сбрось дебафф.</p>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <section class="panel system-panel">
-            <div class="panel-header"><h2>ИНДЕКС ВОЛИ</h2></div>
-            <div class="chart-container"><canvas id="willpowerChart"></canvas></div>
+        <div id="tab-scanner" class="tab-content">
+            <section class="panel">
+                <div class="panel-header"><h2>📷 ИИ-АНАЛИЗАТОР ПРОГРЕССА</h2></div>
+                
+                <div class="scanner-zone" onclick="document.getElementById('photo-upload').click()">
+                    <div class="scan-icon">🧬</div>
+                    <div class="scan-text">Загрузить фото аватара для биометрического анализа<br><span style="font-size:0.7rem;color:#52525b;">(Фронт / Профиль / Спина)</span></div>
+                    <input type="file" id="photo-upload" accept="image/*" onchange="processPhoto(this)">
+                    <img id="photo-preview" class="preview-img" alt="Аватар">
+                </div>
+                
+                <button id="scan-start-btn" class="scan-btn" onclick="startScanning()">ЗАПУСТИТЬ СКАНИРОВАНИЕ</button>
+                
+                <div class="scan-progress-bar" id="scan-progress"><div class="scan-progress-fill" id="scan-fill"></div></div>
+                
+                <div class="analysis-report" id="scan-report">
+                    <div style="font-weight:700;color:#38bdf8;margin-bottom:10px;text-align:center;">=== РЕЗУЛЬТАТ СКАНИРОВАНИЯ ===</div>
+                    <div class="report-line"><span>МЫШЕЧНЫЙ ТОНУС (ПАМП):</span><span id="r-pump">СТАБИЛЬНЫЙ (+4%)</span></div>
+                    <div class="report-line"><span>ИНДЕКС ОСАНКИ (ПЛЕЧИ):</span><span id="r-posture">СИММЕТРИЧНО</span></div>
+                    <div class="report-line"><span>ЧИСТОТА КОЖИ (ДЕРМА):</span><span id="r-skin">ВЫРАВНИВАНИЕ (+7%)</span></div>
+                    <div class="report-line"><span>НЕЙРОМЫШЕЧНЫЙ СТАТУС:</span><span>АКТИВИРОВАН</span></div>
+                </div>
+            </section>
+        </div>
+
+        <div id="tab-history" class="tab-content">
+            <section class="panel">
+                <div class="panel-header"><h2>📊 ГЛУБИННАЯ ДИНАМИКА ВОЛИ</h2></div>
+                <div class="chart-container"><canvas id="historyChart"></canvas></div>
+            </section>
             
-            <div class="system-message">
-                <div class="msg-head">СИСТЕМНОЕ УВЕДОМЛЕНИЕ</div>
-                <div class="msg-body" id="directive-display">
-                    Патч v4.0 установлен. Сложность повышена. Дневной сон отключен. Каждое действие записывается.
+            <section class="panel">
+                <div class="system-message">
+                    <div class="msg-head">ДИРЕКТИВА СИСТЕМЫ</div>
+                    <div class="msg-body">Режим синхронизации гильдии запущен. Твой прогресс пишется в локальный кэш. Дебафф рекрута учтен в матрице. Кожа, мышцы, фокус под контролем.</div>
                 </div>
-            </div>
+                
+                <div class="log-block">
+                    <textarea id="player-log" placeholder="Введи вечерний отчет по кодингу, самочувствию и тренировкам..."></textarea>
+                    <button class="save-log-btn" onclick="saveLog()">СОХРАНИТЬ В ЖУРНАЛ</button>
+                </div>
+            </section>
+        </div>
 
-            <div class="sync-block">
-                <input type="text" id="directive-input" placeholder="Код от Системы...">
-                <button onclick="applyDirective()">ВВОД</button>
-            </div>
-
-            <div class="log-block">
-                <div class="log-head">ЖУРНАЛ ИГРОКА // ВЕЧЕРНИЙ ОТЧЕТ</div>
-                <textarea id="player-log" placeholder="[21:30] Зафиксируй прогресс в дизайне, питании и тренировках..."></textarea>
-                <button class="save-log-btn" onclick="savePlayerLog()">СОХРАНИТЬ ЛОГ</button>
-            </div>
-        </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // ОБНОВЛЕННЫЙ МАССИВ КВЕСТОВ НА ДЕНЬ
+        // Инициализация квестов
         const quests = [
             { id: 1, time: "06:00", name: "Подъем + Ледяное лицо", xp: 50 },
-            { id: 2, time: "06:20", name: "AM CORE: Бег + GymFit", xp: 150 },
+            { id: 2, time: "06:20", name: "AM CORE: Бег + GymFit Пресс", xp: 150 },
             { id: 3, time: "07:15", name: "Прохладный душ + Завтрак", xp: 50 },
-            { id: 4, time: "08:00", name: "DEEP DEV: Дизайн и Код", xp: 150 },
-            { id: 5, time: "12:00", name: "OFFENSIVE: 10 Писем", xp: 200 },
-            { id: 6, time: "13:30", name: "Обед + Протокол Анти-Сон", xp: 100 },
-            { id: 7, time: "19:00", name: "PM HARD: Улица + Chris Heria", xp: 250 },
-            { id: 8, time: "20:30", name: "Теплый душ + Ужин", xp: 50 },
-            { id: 9, time: "21:30", name: "Синхронизация Лога", xp: 50 },
-            { id: 10, time: "22:00", name: "Творог + Отбой (22:30)", xp: 50 }
+            { id: 4, time: "08:00", name: "DEEP DEV: Дизайн и Кодинг", xp: 150 },
+            { id: 5, time: "12:00", name: "OFFENSIVE: Сбор заявок / Клиенты", xp: 200 },
+            { id: 6, time: "13:30", name: "Обед + Борьба с DMN (Анти-Сон)", xp: 100 },
+            { id: 7, time: "19:00", name: "PM HARD: Сплит Тренировка", xp: 250 },
+            { id: 8, time: "20:30", name: "Теплый душ + Ужин + Креатин", xp: 50 },
+            { id: 9, time: "21:30", name: "Синхронизация Лога и Анализ", xp: 50 },
+            { id: 10, time: "22:30", name: "Творог + Отключение Системы", xp: 50 }
         ];
 
-        let playerXP = parseInt(localStorage.getItem('sl_xp')) || 500; // Немного базы за 2 дня
-        let questStates = JSON.parse(localStorage.getItem('sl_states')) || {};
-        let chartData = JSON.parse(localStorage.getItem('sl_chart')) || Array(10).fill(0);
+        let questStates = JSON.parse(localStorage.getItem('sl_g_states')) || {};
+        // Мок истории воли по дням (процент выполнения)
+        let weeklyHistory = JSON.parse(localStorage.getItem('sl_g_history')) || [90, 100, 85, 0, 0, 0, 0];
 
-        function getRank(lvl) {
-            if (lvl >= 50) return "S-RANK";
-            if (lvl >= 30) return "A-RANK";
-            if (lvl >= 20) return "B-RANK";
-            if (lvl >= 10) return "C-RANK";
-            if (lvl >= 5) return "D-RANK";
-            return "E-RANK";
-        }
-
-        function updatePlayerStatus() {
-            const lvl = Math.floor(playerXP / 500) + 1;
-            const currentLvlBaseXP = (lvl - 1) * 500;
-            const xpIntoLvl = playerXP - currentLvlBaseXP;
-            const progressPercent = Math.min(100, Math.max(0, (xpIntoLvl / 500) * 100));
-
-            document.getElementById('user-lvl').textContent = lvl;
-            document.getElementById('user-xp').textContent = playerXP;
-            document.getElementById('user-rank').textContent = getRank(lvl);
-            document.getElementById('xp-progress').style.width = `${progressPercent}%`;
-
-            const completedCount = Object.values(questStates).filter(s => s === 'win').length;
-            const statusBadge = document.querySelector('.quest-status');
-            if (completedCount === quests.length) {
-                statusBadge.textContent = "ЗАВЕРШЕН"; statusBadge.classList.add('completed');
-            } else {
-                statusBadge.textContent = "НЕ ЗАВЕРШЕН"; statusBadge.classList.remove('completed');
-            }
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
         }
 
         function renderQuests() {
@@ -313,98 +271,114 @@
                 item.className = `q-item ${state}`;
                 item.innerHTML = `
                     <div class="q-time">${q.time}</div>
-                    <div class="q-info"><div class="q-name">${q.name}</div><div class="q-xp">+${q.xp} XP</div></div>
+                    <div class="q-name">${q.name}</div>
                     <div class="q-buttons">
-                        <button class="btn-win" onclick="setQuestResult(${q.id}, 'win', ${index})">✓</button>
-                        <button class="btn-fail" onclick="setQuestResult(${q.id}, 'fail', ${index})">X</button>
+                        <button class="btn-win" onclick="setQuestResult(${q.id}, 'win')">✓</button>
+                        <button class="btn-fail" onclick="setQuestResult(${q.id}, 'fail')">X</button>
                     </div>
                 `;
                 container.appendChild(item);
             });
-            updatePlayerStatus();
+            calculateDailySuccess();
         }
 
-        function setQuestResult(id, result, index) {
-            const prevState = questStates[id];
-            const quest = quests.find(q => q.id === id);
-            if (prevState === result) return;
-
-            if (prevState === 'win') playerXP -= quest.xp;
-            if (prevState === 'fail') playerXP += Math.floor(quest.xp / 2);
-
-            if (result === 'win') { playerXP += quest.xp; chartData[index] = 1; } 
-            else if (result === 'fail') { playerXP -= Math.floor(quest.xp / 2); chartData[index] = -1; }
-
-            if (playerXP < 0) playerXP = 0;
+        function setQuestResult(id, result) {
+            if (questStates[id] === result) return;
             questStates[id] = result;
-            
-            localStorage.setItem('sl_xp', playerXP);
-            localStorage.setItem('sl_states', JSON.stringify(questStates));
-            localStorage.setItem('sl_chart', JSON.stringify(chartData));
-
-            renderQuests(); updateWillpowerChart();
+            localStorage.setItem('sl_g_states', JSON.stringify(questStates));
+            renderQuests();
         }
 
-        function toggleWorkout(id) {
-            const content = document.getElementById(id);
-            const btn = content.previousElementSibling;
-            const isOpened = content.classList.contains('active');
+        function calculateDailySuccess() {
+            const totalQuests = quests.length;
+            const wins = Object.values(questStates).filter(s => s === 'win').length;
+            const percentage = Math.round((wins / totalQuests) * 100);
             
-            document.querySelectorAll('.workout-content').forEach(c => {
-                c.classList.remove('active'); c.previousElementSibling.classList.remove('active');
-            });
-
-            if (!isOpened) { content.classList.add('active'); btn.classList.add('active'); }
+            // Записываем сегодняшний день (например, День 4) в историю
+            weeklyHistory[3] = percentage; 
+            localStorage.setItem('sl_g_history', JSON.stringify(weeklyHistory));
+            if(chartInstance) {
+                chartInstance.data.datasets[0].data = weeklyHistory;
+                chartInstance.update();
+            }
         }
 
+        // Логика фотосканера
+        function processPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('photo-preview');
+                    img.src = e.target.value || e.target.result;
+                    img.style.display = 'block';
+                    document.getElementById('scan-start-btn').style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function startScanning() {
+            document.getElementById('scan-start-btn').style.display = 'none';
+            document.getElementById('scan-progress').style.display = 'block';
+            const fill = document.getElementById('scan-fill');
+            fill.style.width = '100%';
+            
+            setTimeout(() => {
+                document.getElementById('scan-progress').style.display = 'none';
+                document.getElementById('scan-report').style.display = 'block';
+                
+                // Рандомизация аналитики для симуляции
+                document.getElementById('r-pump').textContent = `ПРОГРЕССИРУЕТ (+${Math.floor(Math.random()*5)+3}%)`;
+                document.getElementById('r-skin').textContent = `ОЧИЩЕНИЕ (+${Math.floor(Math.random()*8)+5}%)`;
+            }, 3000);
+        }
+
+        function saveLog() {
+            localStorage.setItem('sl_g_log', document.getElementById('player-log').value);
+            alert("ЖУРНАЛ СИНХРОНИЗИРОВАН.");
+        }
+
+        // Инициализация графика истории по дням
         let chartInstance;
         function initChart() {
-            const ctx = document.getElementById('willpowerChart').getContext('2d');
+            const ctx = document.getElementById('historyChart').getContext('2d');
             chartInstance = new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
-                    labels: quests.map(q => q.time),
-                    datasets: [{ data: chartData, backgroundColor: chartData.map(v => v > 0 ? '#38bdf8' : v < 0 ? '#f43f5e' : '#27272a'), borderRadius: 6 }]
+                    labels: ['День 1', 'День 2', 'День 3', 'День 4 (Сегодня)', 'День 5', 'День 6', 'День 7'],
+                    datasets: [{
+                        label: 'Индекс Воли (%)',
+                        data: weeklyHistory,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56,189,248,0.05)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#deff9a',
+                        pointBorderColor: '#050506',
+                        pointRadius: 5,
+                        fill: true,
+                        tension: 0.3
+                    }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    scales: { y: { min: -1.2, max: 1.2, display: false }, x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 }, color: '#a1a1aa' } } },
-                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                    scales: {
+                        y: { min: 0, max: 100, grid: { color: '#1f1f23' }, ticks: { color: '#8e8e99', font: { family: 'JetBrains Mono' } } },
+                        x: { grid: { display: false }, ticks: { color: '#8e8e99', font: { family: 'JetBrains Mono', size: 10 } } }
+                    },
+                    plugins: { legend: { display: false } }
                 }
             });
         }
 
-        function updateWillpowerChart() {
-            if (!chartInstance) return;
-            chartInstance.data.datasets[0].data = chartData;
-            chartInstance.data.datasets[0].backgroundColor = chartData.map(v => v > 0 ? '#38bdf8' : v < 0 ? '#f43f5e' : '#27272a');
-            chartInstance.update();
-        }
-
-        function savePlayerLog() {
-            localStorage.setItem('sl_log', document.getElementById('player-log').value);
-            alert("ЖУРНАЛ ЗАПИСАН В ПАМЯТЬ СИСТЕМЫ.");
-        }
-
-        function applyDirective() {
-            const input = document.getElementById('directive-input');
-            const display = document.getElementById('directive-display');
-            if (!input.value.trim()) return;
-            display.innerHTML = `<span style="color:#deff9a;">[ДИРЕКТИВА ПРИНЯТА]</span><br>${input.value}`;
-            localStorage.setItem('sl_directive', display.innerHTML);
-            input.value = '';
-        }
-
         window.onload = () => {
-            renderQuests(); initChart();
-            if (localStorage.getItem('sl_log')) document.getElementById('player-log').value = localStorage.getItem('sl_log');
-            if (localStorage.getItem('sl_directive')) document.getElementById('directive-display').innerHTML = localStorage.getItem('sl_directive');
+            renderQuests();
+            initChart();
+            if (localStorage.getItem('sl_g_log')) document.getElementById('player-log').value = localStorage.getItem('sl_g_log');
             
-            // Восстановление всех триггеров
             ['water', 'food', 'sleep', 'nofap', 'smoke', 'ex'].forEach(t => {
                 const chk = document.getElementById(`t-${t}`);
-                if (localStorage.getItem(`sl_t_${t}`) === 'true') chk.checked = true;
-                chk.addEventListener('change', () => localStorage.setItem(`sl_t_${t}`, chk.checked));
+                if (localStorage.getItem(`sl_g_t_${t}`) === 'true') chk.checked = true;
+                chk.addEventListener('change', () => localStorage.setItem(`sl_g_t_${t}`, chk.checked));
             });
         };
     </script>
